@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>헥토 월렛 — 스토어 등록 대응 보고</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css');
+:root{--ink:#0c0f16;--ink2:#41464f;--muted:#6b7079;--sub:#8b909c;--faint:#aeb3bd;--line:#e9ebf0;--line2:#f1f2f5;--paper:#eef0f4;--navy:#20134d;--brand:#4739d9;--green:#12c26b;--red:#ff5964;--amber:#b87514;--blue:#2563eb;--grayb:#f1f2f5}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;line-height:1.6;font-size:14px;-webkit-font-smoothing:antialiased;word-break:keep-all}
+.wrap{max-width:1280px;margin:0 auto;padding:38px 34px 80px}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1}
+
+/* ── 헤더 ─────────────────────────────── */
+.head{margin-bottom:20px}
+.head .ey{font-size:11.5px;font-weight:700;color:var(--brand);letter-spacing:1.4px;margin-bottom:9px}
+.head h1{font-size:25px;font-weight:800;letter-spacing:-.6px;color:var(--navy);margin-bottom:9px;line-height:1.25}
+.head .meta{font-size:11.5px;color:var(--faint);margin-top:12px;padding-top:10px;border-top:3px solid var(--navy);font-variant-numeric:tabular-nums;font-weight:500}
+.refbox{background:#f8f8fc;border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:10px;padding:11px 15px;margin:14px 0 18px;font-size:12px;color:var(--ink2);line-height:1.75}
+.refbox b{color:var(--navy)}
+.refbox a{color:var(--brand);font-weight:700;text-decoration:none}
+.refbox a:hover{text-decoration:underline}
+
+/* ── 퀵내비 ─────────────────────────────── */
+.qnav{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 20px;padding:11px 14px;background:#fff;border:1px solid var(--line);border-radius:12px;align-items:center}
+.qnav .ql{font-size:10.5px;font-weight:800;color:var(--sub);letter-spacing:.5px;margin-right:4px}
+.qnav a{font-size:12px;font-weight:700;color:var(--ink2);text-decoration:none;background:var(--grayb);border:1px solid var(--line);border-radius:7px;padding:5px 11px;transition:.15s}
+.qnav a:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.qnav a.hi{background:#efeaff;border-color:#d5cbff;color:var(--navy)}
+.qnav a.hi:hover{background:var(--navy);color:#fff}
+
+/* ── 결론 ─────────────────────────────── */
+.concl{background:#20134d;color:#fff;border-radius:14px;padding:18px 22px;margin-bottom:24px;font-size:14.5px;line-height:1.8}
+.concl b{color:#c9beff}
+
+/* ── 섹션 헤더 ─────────────────────────────── */
+.modsep{margin:30px 0 12px;display:flex;align-items:center;gap:11px;padding-bottom:8px;border-bottom:2px solid var(--navy)}
+.modsep .mn{font-size:11.5px;font-weight:800;color:#fff;background:var(--navy);border-radius:7px;padding:4px 11px;letter-spacing:.3px}
+.modsep h2{font-size:17.5px;font-weight:800;color:var(--navy)}
+.lead{font-size:12.5px;color:var(--ink2);margin:2px 0 12px;line-height:1.75}
+.subhd{font-size:13.5px;font-weight:800;color:var(--navy);margin:20px 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.subhd .sn{font-size:10.5px;font-weight:800;color:#fff;background:var(--brand);border-radius:6px;padding:2px 8px}
+.subhd a.more{font-size:10.5px;font-weight:700;color:var(--brand);text-decoration:none;margin-left:auto}
+.subhd a.more:hover{text-decoration:underline}
+
+/* ── 요약 카드 · 구분선 ─────────────────────────────── */
+.sumsec{background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px 22px 18px;margin-bottom:6px;box-shadow:0 2px 6px rgba(20,28,56,.05)}
+.sumsec .modsep{margin-top:22px}
+.sumsec table.rt{margin-bottom:2px}
+.secdiv{display:flex;align-items:center;gap:12px;margin:30px 0 34px}
+.secdiv::before,.secdiv::after{content:"";flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--faint) 0 5px,transparent 5px 12px)}
+.secdiv span{font-size:10px;font-weight:800;color:var(--faint);letter-spacing:1.5px;white-space:nowrap}
+
+/* ── 표 — 단일 서식 ─────────────────────────────── */
+table.rt,table.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:16px;background:#fff;border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,28,56,.04)}
+table.rt th,table.tbl th{text-align:left;background:var(--navy);color:#fff;font-weight:700;padding:9px 12px;border:1px solid var(--navy);font-size:11.5px;vertical-align:middle}
+table.rt td,table.tbl td{padding:9px 12px;border:1px solid var(--line);color:var(--ink2);vertical-align:top;line-height:1.65}
+table.rt td b,table.tbl td b{color:var(--ink);font-weight:700}
+table.rt td.item{font-weight:700;color:var(--navy)}
+table.tbl td.c{font-weight:700;color:var(--navy);white-space:nowrap;font-size:12px;background:#f5f5fb}
+table.tbl td.cn{background:var(--brand) !important;color:#fff !important;font-weight:800;text-align:center;width:34px;font-variant-numeric:tabular-nums}
+table.rt tr:nth-child(even) td,table.tbl tr:nth-child(even) td{background:#f8f8fc}
+td.due{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink2)}
+td.due b{color:#B91C3C;font-weight:800}
+td.lkc{white-space:nowrap}
+.iawrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:2px 0 16px}
+table.iatbl{border-collapse:collapse;min-width:100%;width:100%;font-size:12.5px;background:#fff;border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,28,56,.04)}
+.iatbl th{background:var(--navy);color:#fff;font-weight:700;font-size:11.5px;padding:9px 12px;border:1px solid var(--navy);text-align:left;white-space:nowrap}
+.iatbl td{border:1px solid var(--line);padding:9px 12px;vertical-align:top;line-height:1.65;color:var(--ink2)}
+.iatbl tr:nth-child(even) td{background:#f8f8fc}
+.iatbl td.nw{white-space:nowrap}
+.iatbl .d1{font-weight:700;color:var(--navy)}
+.iatbl .ct{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+.iatbl .fn{color:var(--ink2)}
+.iatbl .fn b{color:var(--ink);font-weight:700}
+
+/* ── 배지 ─────────────────────────────── */
+.own{display:inline-block;font-size:10px;font-weight:700;color:var(--ink2);background:var(--grayb);border:1px solid var(--line);border-radius:5px;padding:2px 7px;margin:1px 3px 1px 0;white-space:nowrap}
+.ph{display:inline-block;font-size:10px;font-weight:800;border-radius:5px;padding:2px 8px;margin-right:6px;white-space:nowrap;letter-spacing:.3px;vertical-align:1px}
+.ph.p0{background:var(--navy);color:#fff}
+.ph.p1{background:#4739d9;color:#fff}
+.ph.p2{background:#e8e5f7;color:#20134d;border:1px solid #d5cbff}
+.ph.p3{background:#e7f7ef;color:#0a7d51;border:1px solid #bce6d1}
+.bg{display:inline-block;font-size:9px;font-weight:800;border-radius:5px;padding:2px 7px;margin-left:5px;vertical-align:middle;letter-spacing:.2px}
+.bg.cf{background:#4739d9;color:#fff}
+.bg.rs{background:#0a7d51;color:#fff}
+.bg.rs::before{content:"✓ "}
+.bg.pp{background:var(--grayb);color:var(--muted);border:1px solid var(--line)}
+.crit{color:#B91C3C;font-weight:800;margin-right:3px}
+
+/* ── 해결 완료 항목 블록 ─────────────────────────────── */
+.rsbox{background:#f2fbf6;border:1px solid #bce6d1;border-left:3px solid var(--green);border-radius:12px;padding:14px 18px;margin:14px 0 12px}
+.rsbox .rshd{font-size:12.5px;font-weight:800;color:#0a7d51;margin-bottom:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.rsbox .rshd .cnt{font-size:10px;font-weight:800;background:#0a7d51;color:#fff;border-radius:5px;padding:2px 8px;font-variant-numeric:tabular-nums}
+.rsbox .rshd .sub{font-size:11px;font-weight:600;color:var(--muted);margin-left:auto}
+.rsbox table.rsl{width:100%;border-collapse:collapse;font-size:12px;background:transparent;box-shadow:none;margin:0}
+.rsbox table.rsl td{border:none;border-top:1px dashed #cfe8da;padding:7px 0;vertical-align:top;line-height:1.6;color:var(--ink2);background:transparent !important}
+.rsbox table.rsl tr:first-child td{border-top:none;padding-top:0}
+.rsbox table.rsl td.rsi{font-weight:700;color:#0a6a45;width:34%;padding-right:14px}
+.rsbox table.rsl td.rsi::before{content:"✓";color:var(--green);font-weight:800;margin-right:6px}
+.rsbox table.rsl td.rsn{color:var(--ink2)}
+.rsbox table.rsl td.rsn b{color:var(--ink);font-weight:700}
+.rsbox .rsleft{font-size:11px;color:#8a5a00;background:#fdf3e3;border:1px solid #f5e3c0;border-radius:7px;padding:8px 12px;margin-top:11px;line-height:1.65}
+.rsbox .rsleft b{color:var(--amber);font-weight:800}
+.lk{display:block;font-size:10.5px;color:var(--brand);text-decoration:none;font-weight:700;margin-bottom:4px;white-space:nowrap}
+.lk:last-child{margin-bottom:0}
+.lk:hover{text-decoration:underline}
+.lk.st::before{content:"↗ "}
+.lk.rd::before{content:"→ "}
+.dash{color:var(--faint)}
+
+/* ── 콜아웃 — 색은 위험·주의·정리에만 ─────────────────────────────── */
+.note{border-radius:10px;padding:11px 15px;margin:10px 0;font-size:12.5px;line-height:1.7;background:#f5f6fa;border:1px solid var(--line);color:var(--ink2)}
+.note b{color:var(--navy);font-weight:700}
+.note.warn{background:#fdf3e3;border-color:#f5e3c0}.note.warn b{color:var(--amber)}
+.note.dang{background:#fdecef;border-color:#f7c9d1}.note.dang b{color:#B91C3C}
+.note.ok{background:#e7f7ef;border-color:#bce6d1}.note.ok b{color:#0a7d51}
+ul.fl{margin:2px 0;padding-left:15px;line-height:1.6}ul.fl li{margin:3px 0}
+
+/* ── 정책 원문 아코디언 ─────────────────────────────── */
+.acc{background:#fff;border:1px solid var(--line);border-radius:10px;margin:8px 0 12px;overflow:hidden}
+.acc summary{cursor:pointer;padding:11px 15px;font-size:12.5px;font-weight:700;color:var(--navy);background:#f8f8fc;list-style:none;user-select:none;display:flex;align-items:center;gap:8px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::before{content:"▸";color:var(--brand);font-weight:800}
+.acc[open] summary::before{content:"▾"}
+.acc[open] summary{border-bottom:1px solid var(--line)}
+.acc .accbody{padding:10px 15px 14px}
+.quo{background:#fff;border:1px solid var(--line);border-left:3px solid var(--navy);border-radius:8px;padding:10px 13px;margin:8px 0;font-size:11.5px;line-height:1.7;color:var(--ink2)}
+.quo .src{display:block;font-size:9.5px;color:var(--faint);margin-top:6px;font-weight:600}
+.quo .src a{color:var(--brand);text-decoration:none;font-weight:700}
+.quo .src a:hover{text-decoration:underline}
+.quo .kr{display:block;margin-top:7px;padding-top:7px;border-top:1px dashed var(--line);color:var(--ink2);font-size:12px;line-height:1.7}
+.quo .kr b{color:var(--navy);font-weight:700}
+.quo .qbadge{display:block;width:max-content;font-size:9px;font-weight:800;border-radius:5px;padding:2px 8px;margin-bottom:7px;color:#fff;letter-spacing:.3px}
+.quo.apple{border-left-color:#1d1d1f}
+.quo.apple .qbadge{background:#1d1d1f}
+.quo.google{border-left-color:#1a73e8}
+.quo.google .qbadge{background:#1a73e8}
+.quo .ins{display:block;margin-top:8px;padding:9px 12px;background:#f5f6fa;border-radius:7px;font-size:12px;line-height:1.75;color:var(--ink2)}
+.quo .ins b{color:var(--brand)}
+
+/* ── FIN 판정 카드 ─────────────────────────────── */
+.vsplit{display:flex;flex-direction:column;gap:14px;margin:12px 0 16px}
+.vstore{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.vstore .vsh{padding:10px 20px;font-size:12.5px;font-weight:800;letter-spacing:.6px;color:#fff}
+.vstore.apple .vsh{background:#1d1d1f}
+.vstore.google .vsh{background:#1a73e8}
+.vstore .vsh .vss{font-weight:500;letter-spacing:0;opacity:.85;font-size:11.5px}
+.verdict{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.vc{padding:16px 20px}
+.vc+.vc{border-left:1px solid var(--line)}
+.vc .vh{margin-bottom:9px}
+.vc .vh .vt{font-size:14px;font-weight:800;color:var(--navy)}
+.vc .vq{font-size:12px;color:var(--muted);margin-bottom:9px}
+.vc .va{font-size:13px;font-weight:800;color:#0a7d51;background:#e7f7ef;border:1px solid #bce6d1;border-radius:9px;padding:9px 12px;line-height:1.55}
+.vc ul{margin:10px 0 0;padding-left:16px;font-size:11.5px;line-height:1.7;color:var(--ink2)}
+@media(max-width:760px){.verdict{grid-template-columns:1fr}.vc+.vc{border-left:none;border-top:1px solid var(--line)}}
+
+/* ── 로드맵 흐름도 ─────────────────────────────── */
+.flowlane{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:8px 0}
+.flowlane .fh{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--navy);margin-bottom:11px}
+.flowlane .fh .fnum{width:21px;height:21px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.fchain{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.fbox{border-radius:10px;padding:8px 11px;font-size:11.5px;font-weight:700;line-height:1.4;background:#f5f6fa;color:var(--ink2);border:1px solid var(--line)}
+.fbox.mn{background:var(--navy);color:#fff;border-color:var(--navy)}
+.fbox.gt{background:#fdecef;color:#B91C3C;border-color:#f7c9d1}
+.fbox.hd{background:#e7f7ef;color:#0a7d51;border-color:#bce6d1}
+.fbox .sb{display:block;font-size:9.5px;font-weight:600;opacity:.78;margin-top:2px;font-variant-numeric:tabular-nums}
+.fsep{color:var(--faint);font-size:14px;font-weight:700}
+
+/* ── 단계별 작업 헤더 ─────────────────────────────── */
+.wk{display:flex;align-items:center;gap:10px;margin:26px 0 10px;padding:6px 0 6px 12px;border-left:4px solid var(--brand);flex-wrap:wrap}
+.wk .wn{padding:4px 12px;border-radius:8px;color:#fff;font-size:11.5px;font-weight:800;background:var(--navy);white-space:nowrap;letter-spacing:.3px}
+.wk .wt{font-size:14.5px;font-weight:800;color:var(--navy)}
+.wk .wd{font-size:11.5px;color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums;margin-left:auto;background:var(--grayb);border:1px solid var(--line);border-radius:6px;padding:3px 9px}
+
+/* ── 데드라인 카드 ─────────────────────────────── */
+.dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:11px;margin:10px 0 16px}
+.dlc{background:#fff;border:1px solid var(--line);border-top:3px solid var(--red);border-radius:12px;padding:12px 14px}
+.dlc .dd{font-size:13px;font-weight:800;color:#B91C3C;font-variant-numeric:tabular-nums}
+.dlc .dt{font-size:12.5px;font-weight:800;color:var(--navy);margin-top:4px;line-height:1.4}
+.dlc .dg{font-size:10.5px;font-weight:800;color:#0a7d51;background:#e7f7ef;border-radius:5px;padding:2px 7px;display:inline-block;margin-top:6px;font-variant-numeric:tabular-nums}
+.dlc .ds{font-size:10.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+.dlc.done{border-top-color:var(--faint)}.dlc.done .dd{color:var(--muted)}
+
+.foot{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:11px;color:var(--faint);line-height:1.7}
+.foot a{color:var(--brand);text-decoration:none;font-weight:700}
+
+/* ── 인쇄 ─────────────────────────────── */
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .qnav{display:none}
+  .acc .accbody{display:block !important}
+  .acc summary::before{content:"■"}
+  table,.dlc,.vstore,.flowlane,.sumsec,.note,.quo{break-inside:avoid}
+  .modsep,.subhd,.wk{break-after:avoid}
+  a{color:var(--ink2);text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="ey">HECTO WALLET · STORE SUBMISSION · 실행 보고</div>
+    <h1>비수탁 월렛 스토어 등록 — 무엇이 필요하고 어떻게 대응하는가</h1>
+    <div class="meta">2026-08-13 v1.0 &nbsp;|&nbsp; 작성 차상호 &nbsp;|&nbsp; 대상 = 월렛(블랙 월렛) 비수탁 지갑 &nbsp;|&nbsp; 일정은 영업일 마감 기준(보수적 산정)</div>
+  </div>
+
+  <div class="refbox">이 문서는 <b>보고용 요약</b>이다. 각 항목의 전체 조항별 판정·확인 필요 항목·미확인 사항은 <b>심층 문서</b>(<a href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html" target="_blank">월렛앱_스토어등록_심사대응로드맵_v1.1</a>)에, 담당자별 체크리스트는 <b>실행 체크리스트</b>(<a href="월렛앱_스토어등록_체크리스트_v1.0_20260813.html" target="_blank">월렛앱_스토어등록_체크리스트_v1.0</a>)에 있다. 요약표의 <b>관련 링크</b> 열에서 스토어 정책 원문과 심층 문서의 해당 섹션으로 바로 이동할 수 있다.</div>
+
+  <nav class="qnav">
+    <span class="ql">바로가기</span>
+    <a class="hi" href="#sum">요약 — 지금 해야 하는 일</a>
+    <a href="#ov">1. 개요</a>
+    <a href="#plan">2. 실행안</a>
+    <a href="#ref">3. 참고</a>
+    <a href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html" target="_blank">심사대응 로드맵 ↗</a>
+    <a href="월렛앱_스토어등록_체크리스트_v1.0_20260813.html" target="_blank">실행 체크리스트 ↗</a>
+  </nav>
+
+  <div class="concl">
+    <b>한 줄 결론 —</b> 비수탁 월렛은 두 스토어 모두에서 금융 앱으로 취급되지만, 라이선스는 면제된다. 남은 과제는 <b>&ldquo;비수탁임을 스토어가 납득할 문서로 증명하는 것&rdquo;</b>이다.<br><br>
+    9월 말 출시를 가정하면 <b>1차 제출 목표일은 8/31(월)</b>이다. 반려 대응 사이클(2~3회)을 확보하기 위해 <b>모든 준비 항목의 마감을 영업일 기준으로 앞당겨</b> 잡았고, 그 결과 <b>개발 구현 창구 7영업일(8/20~8/28)</b>과 <b>반려 대응 3주(9/7~9/25)</b>를 남겼다.
+  </div>
+
+  <!-- ══════════════════════ 요약 — 지금 해야 하는 일 ══════════════════════ -->
+  <div class="sumsec" id="sum">
+  <div class="modsep"><span class="mn">요약</span><h2>지금 해야 하는 일 — 항목 요약</h2></div>
+  <div class="lead">배경은 <b>개요</b>, 상세 일정·근거는 <b>실행안·참고</b>에 있다. 여기서는 <b>무엇을 · 누가 · 언제</b>만 훑는다.<br>
+  <span class="crit">⚠</span><b>크리티컬 패스</b> — 이 항목이 밀리면 전체 일정이 함께 밀린다 &nbsp;·&nbsp; <span class="bg rs" style="margin-left:0">해결</span> <b>이미 확보·확인이 끝난 것</b> — 표 아래에 따로 모았다 &nbsp;·&nbsp; <span class="bg cf" style="margin-left:0">확정</span> 프로젝트에서 이미 결정된 정책</div>
+  <table class="rt">
+    <tr><th style="width:29%">항목</th><th style="width:13%">담당</th><th style="width:15%">기한</th><th style="width:28%">비고</th><th style="width:15%">관련 링크</th></tr>
+
+    <tr>
+      <td class="item"><span class="ph p0">P0</span><span class="crit">⚠</span>옥텟 영문 기술확인서 요청</td>
+      <td><span class="own">기획</span><span class="own">옥텟</span></td>
+      <td class="due"><b>8/14(금)</b> 발송<br>8/21(금) 회신 목표</td>
+      <td>회신 리드타임이 통제 밖이다. 8/21까지 미회신이면 8/24(월) 에스컬레이션한다</td>
+      <td class="lkc"><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#pre" target="_blank">로드맵 PRE</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p0">P0</span><span class="crit">⚠</span>빌드 요건 대응<br>(target API 36 · iOS 26 SDK)</td>
+      <td><span class="own">개발</span></td>
+      <td class="due"><b>8/14(금)</b> 가능여부<br>8/26(수) 완료</td>
+      <td>Play 마감 8/31(월)보다 <b>3영업일 앞</b>에 끝낸다. 미충족 시 제출·업로드 자체가 거부된다</td>
+      <td class="lkc"><a class="lk st" href="https://developer.android.com/google/play/requirements/target-sdk" target="_blank" rel="noopener">Play 정책 원문</a><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#hrd" target="_blank">로드맵 HRD</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p0">P0</span>출시 목표일 · 판매지역 확정</td>
+      <td><span class="own">사업</span><span class="own">기획</span></td>
+      <td class="due"><b>8/14(금)</b></td>
+      <td>판매지역 한국 한정은 Apple 3.1.5(iii) 지역 요건을 선제 충족하는 수단이기도 하다</td>
+      <td class="lkc"><a class="lk st" href="https://developer.apple.com/app-store/review/guidelines/#3.1.5" target="_blank" rel="noopener">Apple 3.1.5 원문</a><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#rmp" target="_blank">로드맵 RMP</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p0">P0</span>ERN · 전략물자 사전판정 착수</td>
+      <td><span class="own">법무</span></td>
+      <td class="due"><b>8/14(금)</b> 착수</td>
+      <td>ERN 10~15영업일 · 사전판정 약 15영업일. 착수가 늦으면 제출 시점에 맞출 수 없다</td>
+      <td class="lkc"><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#etc" target="_blank">로드맵 ETC</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p1">P1</span>심사자 접근 대응<br>(리뷰어 계정 · 실거래 테스트자금)</td>
+      <td><span class="own">보안</span><span class="own">개발</span></td>
+      <td class="due">8/18(화) 보안 승인<br>8/28(금) 구현</td>
+      <td>보안 승인이 개발 착수의 선행조건이다. 화면 도달만으론 부족하고 전송이 실제로 완결돼야 한다</td>
+      <td class="lkc"><a class="lk st" href="https://developer.apple.com/app-store/review/guidelines/#2.1" target="_blank" rel="noopener">Apple 2.1 원문</a><a class="lk st" href="https://support.google.com/googleplay/android-developer/answer/15748846" target="_blank" rel="noopener">Play 로그인 요건</a><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#rev" target="_blank">로드맵 REV</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p1">P1</span><span class="crit">⚠</span>계정 삭제 법정 보존 항목 확정</td>
+      <td><span class="own">법무</span><span class="own">기획</span></td>
+      <td class="due"><b>8/19(수)</b> 확정<br>8/20(목) 화면 정의</td>
+      <td>개발 착수의 선행조건이다. 이 날짜가 개발 구현 창구 7영업일을 결정한다</td>
+      <td class="lkc"><a class="lk st" href="https://developer.apple.com/support/offering-account-deletion-in-your-app/" target="_blank" rel="noopener">Apple 원문</a><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#del" target="_blank">로드맵 DEL</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p1">P1</span>계정 삭제 인앱 · 웹 구현</td>
+      <td><span class="own">개발</span></td>
+      <td class="due">8/20(목) 착수<br>8/28(금) 완료</td>
+      <td>Play는 인앱 경로와 <b>웹 삭제요청 공개 URL</b>을 둘 다 요구한다 — 웹 페이지가 별도 산출물이다</td>
+      <td class="lkc"><a class="lk st" href="https://support.google.com/googleplay/android-developer/answer/13327111" target="_blank" rel="noopener">Play 데이터 삭제</a><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#del" target="_blank">로드맵 DEL</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p1">P1</span>CI / DI 결론 확보</td>
+      <td><span class="own">데이터정책팀</span></td>
+      <td class="due"><b>8/19(수)</b></td>
+      <td>프라이버시 라벨 확정의 선행조건이다. 목적이 중복 리워드 방지라면 DI가 목적 적합성에서 우월하다</td>
+      <td class="lkc"><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#etc" target="_blank">로드맵 ETC</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p1">P1</span>Play 금융기능 선언 · 사전 문의</td>
+      <td><span class="own">기획</span><span class="own">법무</span></td>
+      <td class="due"><b>8/19(수)</b> 접수</td>
+      <td>회신 리드타임을 확보하려면 조기 접수해야 한다. 서면 회신·티켓번호가 반려 시 유일한 근거다</td>
+      <td class="lkc"><a class="lk st" href="https://support.google.com/googleplay/android-developer/answer/13849271" target="_blank" rel="noopener">Play 선언 원문</a><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#gpl" target="_blank">로드맵 GPL</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p2">P2</span>프라이버시 라벨 3자 대조</td>
+      <td><span class="own">법무</span><span class="own">기획</span></td>
+      <td class="due">8/26(수)</td>
+      <td>Apple App Privacy · Play Data safety · 개인정보 처리방침 불일치가 가장 흔한 반려 사유다</td>
+      <td class="lkc"><a class="lk st" href="https://support.google.com/googleplay/android-developer/answer/10787469" target="_blank" rel="noopener">Play Data safety</a><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#etc" target="_blank">로드맵 ETC</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p2">P2</span><span class="crit">⚠</span>비수탁 증명 서류 5종 완성</td>
+      <td><span class="own">법무</span><span class="own">기획</span></td>
+      <td class="due"><b>8/28(금)</b></td>
+      <td>&ldquo;라이선스 없음&rdquo;이 아니라 &ldquo;대상 아님&rdquo;을 입증한다. 나눠 내면 반려 루프가 길어지므로 첫 제출에 전부 첨부한다</td>
+      <td class="lkc"><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#pre" target="_blank">로드맵 PRE</a></td>
+    </tr>
+
+    <tr>
+      <td class="item"><span class="ph p3">P3</span>Apple 1차 제출 → Play 제출</td>
+      <td><span class="own">개발</span><span class="own">기획</span></td>
+      <td class="due">8/31(월) Apple<br>9/2(수) Play</td>
+      <td>Apple을 먼저 넣어 피드백을 Play에 선반영한다. 반려 대응 담당·창구를 9/4(금)까지 확정한다</td>
+      <td class="lkc"><a class="lk rd" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#rmp" target="_blank">로드맵 RMP</a></td>
+    </tr>
+  </table>
+  <div class="rsbox">
+    <div class="rshd"><span class="cnt">해결 7</span>이미 해결된 것 — 이 기간에 다시 다루지 않는다<span class="sub">이번 조사·확인으로 닫힌 항목</span></div>
+    <table class="rsl">
+      <tr>
+        <td class="rsi">개발자 계정 법인(Organization) 등록<span class="bg rs">해결</span></td>
+        <td class="rsn">Apple·Play 양쪽 모두 등록 확인 완료. <b>D-U-N-S 68-826-5663</b>(Hecto Innovation Co., Ltd.) 확보 — Apple 3.1.5(i)·5.1.1(ix)가 요구하는 법인 요건이 이것으로 충족된다</td>
+      </tr>
+      <tr>
+        <td class="rsi">라이선스·VASP 신고 필요 여부 판정<span class="bg rs">해결</span></td>
+        <td class="rsn">양 스토어 정책 원문으로 <b>&ldquo;비수탁은 라이선스 요구 대상이 아님&rdquo;</b>을 확인했다. 판정 자체는 닫혔고, 남은 것은 그 사실을 입증하는 서류다</td>
+      </tr>
+      <tr>
+        <td class="rsi">MPC 2-of-3 비수탁 구조<span class="bg cf">확정</span><span class="bg rs">해결</span></td>
+        <td class="rsn">User Share 1개(이용자 기기) + Octet Shares 2개 구성이 확정되어 있다. <b>구조 자체는 더 결정할 것이 없고</b>, 남은 것은 영문 증빙 확보다</td>
+      </tr>
+      <tr>
+        <td class="rsi">본인확인(PASS)을 가입 절차에서 제외<span class="bg cf">확정</span><span class="bg rs">해결</span></td>
+        <td class="rsn">리워드 신청 시점으로 옮긴 결정 덕분에 <b>심사자가 PASS 없이 로그인 → 지갑생성 → 홈 → 송금까지 도달</b>한다. Apple 5.1.1(v) 최소수집 원칙도 함께 충족된다</td>
+      </tr>
+      <tr>
+        <td class="rsi">게임물 등급분류(GRAC)<span class="bg rs">해결</span></td>
+        <td class="rsn">Play 문서가 <i>GRAC ratings are only issued for games</i>로 명시한다. <b>대상 아님이 확정</b>이며 IARC 설문만 작성하면 된다(P1 #14에 포함)</td>
+      </tr>
+      <tr>
+        <td class="rsi">암호화 수출 CCATS<span class="bg rs">해결</span></td>
+        <td class="rsn">TLS·secp256k1·AES는 모두 국제표준이므로 <b>CCATS 신청은 불필요</b>하다. ERN 신청만 남는다(P0 #4)</td>
+      </tr>
+      <tr>
+        <td class="rsi">Play 클로즈드 테스트 요건<span class="bg rs">해결</span></td>
+        <td class="rsn">12테스터·14일 요건은 <b>개인 계정에만 적용</b>된다. 법인 계정이므로 미적용 — 일정에서 제외해도 된다</td>
+      </tr>
+    </table>
+    <div class="rsleft"><b>다만 이 7건이 &ldquo;서류까지 끝났다&rdquo;는 뜻은 아니다.</b> 판정과 구조는 닫혔지만 <b>증빙 문서는 별개 항목</b>이다 — 비수탁 판정의 입증은 <b>옥텟 기술확인서(P0 #1)</b>와 <b>증명 서류 5종(P2 #19)</b>에서 다룬다. 표기할 때도 &ldquo;면제받았다&rdquo;가 아니라 <b>&ldquo;대상이 아니다&rdquo;</b>로 써야 한다.</div>
+  </div>
+
+  <div class="note dang" style="margin-bottom:4px"><b>이 일정은 보수적으로 잡은 것이다.</b> 모든 마감을 <b>영업일(금요일 이전)</b>로 두어 주말을 버퍼로 남겼고, 개발이 입력값을 기다리지 않도록 <b>법무·보안·데이터정책팀 회신을 8/18~8/19에 앞당겨</b> 배치했다. 📌 <b>선행조건 3건(보안 승인 8/18 · 법정 보존 항목 8/19 · CI/DI 결론 8/19)이 밀리면 개발 구현 창구가 그만큼 줄어든다.</b></div>
+  </div>
+
+  <div class="secdiv"><span>배 경 · 근 거</span></div>
+
+  <!-- ══════════════════════ 1. 개요 ══════════════════════ -->
+  <div class="modsep" id="ov"><span class="mn">1</span><h2>개요 — 스토어가 우리를 어떻게 보는가</h2></div>
+  <div class="lead">양 스토어의 정책 원문으로 확인한 결과, 답은 <b>&ldquo;예, 금융 앱이다. 그러나 라이선스는 면제된다&rdquo;</b>이다. 두 부분이 각각 다른 조항에서 나온다.</div>
+
+  <div class="subhd"><span class="sn">1</span>FIN — 핵심 질문: Apple · Google 판정<a class="more" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#fin" target="_blank">로드맵 원문 FIN →</a></div>
+  <div class="vsplit">
+    <div class="vstore apple">
+      <div class="vsh">APPLE <span class="vss">— 조항 문언 기준 판정</span></div>
+      <div class="verdict">
+        <div class="vc">
+          <div class="vh"><span class="vt">금융 앱인가</span></div>
+          <div class="vq">카테고리 선택과 무관하게 판정된다</div>
+          <div class="va">예 — 규제산업으로 명시 분류된다</div>
+          <ul>
+            <li><b>5.1.1(ix)</b>가 2025-11-13 개정으로 규제산업 목록에 <b>crypto exchanges를 추가</b>했다</li>
+            <li>같은 조항 후단 <i>or that require sensitive user information</i> 때문에 <b>거래소가 아니어도 본인확인을 요구하면 적용</b>된다</li>
+            <li>즉 카테고리를 Utilities로 바꿔도 <b>회피되지 않는다</b></li>
+          </ul>
+        </div>
+        <div class="vc">
+          <div class="vh"><span class="vt">라이선스가 필요한가</span></div>
+          <div class="vq">조항이 지갑과 거래소를 나눈다</div>
+          <div class="va">아니다 — 법인 계정만 요구된다</div>
+          <ul>
+            <li><b>3.1.5(i) 지갑</b> — 요구사항은 <i>enrolled as an organization</i> 하나뿐. 라이선스 요구가 없다<span class="bg rs">해결</span></li>
+            <li><b>3.1.5(iii) 거래소</b> — 여기서만 라이선스를 요구한다</li>
+            <li><span class="crit">⚠</span>문제는 <b>심사자가 송금 기능을 보고 (iii)을 적용하는 오분류</b>다 → <a href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#app" target="_blank">APP §2</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="vstore google">
+      <div class="vsh">GOOGLE <span class="vss">— 절차·선언 기준 판정</span></div>
+      <div class="verdict">
+        <div class="vc">
+          <div class="vh"><span class="vt">금융 앱인가</span></div>
+          <div class="vq">스토어가 공식 절차로 확인한다</div>
+          <div class="va">예 — 금융 기능 선언 의무 대상</div>
+          <ul>
+            <li>「금융 서비스」 정책 범위가 <i>related to the management or investment of money <b>and cryptocurrencies</b></i>로 암호화폐를 명시 포함한다</li>
+            <li>Play Console <b>「금융 기능 선언」에서 &ldquo;암호화폐 지갑&rdquo;을 선택</b>해야 한다 — 스토어가 공식적으로 금융 앱으로 등록한다</li>
+            <li>선언은 <b>금융 기능이 없는 앱도 작성 의무</b>다. 미작성 시 게시 불가</li>
+          </ul>
+        </div>
+        <div class="vc">
+          <div class="vh"><span class="vt">라이선스가 필요한가</span></div>
+          <div class="vq">한국이 명시 대상국이라 중요하다</div>
+          <div class="va">아니다 — 비수탁은 정책 범위 밖</div>
+          <ul>
+            <li>「암호화폐 거래소 및 소프트웨어 지갑 정책」에 한국이 <b>KoFIU VASP 신고 요구국으로 명시</b>되어 있다</li>
+            <li>그러나 같은 정책이 <b><i>Non-custodial wallets are out of scope</i></b>를 명시한다<span class="bg rs">해결</span></li>
+            <li><span class="crit">⚠</span><b>Google은 &ldquo;custodial&rdquo;의 정의 조항을 두지 않았다</b> → 심사자 재량 → <a href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#gpl" target="_blank">GPL §2</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subhd"><span class="sn">2</span>정책 원문 요약 — 스토어별로 나누어 담았다</div>
+  <details class="acc">
+    <summary>Apple 정책 원문 2건 — 5.1.1(ix) 규제산업 · 3.1.5(i) 지갑</summary>
+    <div class="accbody">
+      <div class="quo apple"><span class="qbadge">APPLE</span><b>5.1.1(ix)</b> Apps that provide services in highly regulated fields (such as banking and financial services, healthcare, gambling, legal cannabis use, air travel <b>and crypto exchanges</b>) <b>or that require sensitive user information</b> should be submitted by a legal entity that provides the services, and not by an individual developer.
+        <span class="kr"><b>한글 해석 —</b> 은행·금융 서비스, 의료, 도박, 대마초 합법 이용, 항공 여행, <b>암호화폐 거래소</b> 등 고도로 규제된 분야에서 서비스를 제공하거나 <b>민감한 이용자 정보를 요구하는</b> 앱은 개인 개발자가 아니라 해당 서비스를 제공하는 법인이 제출해야 한다.</span>
+        <span class="ins"><b>인사이트 —</b> &ldquo;법인이 제출&rdquo;은 별도 서류 제출이 아니라 <b>Apple Developer Program 계정 유형(Organization) 자체</b>를 말한다. 비수탁이어도 이 조항은 면제되지 않는다 — 후단의 &ldquo;or that require sensitive user information&rdquo;에 리워드 시점 PASS 실명확인이 걸리기 때문이다. 다만 <b>다툴 실익이 없다</b> — 3.1.5(i)(아래)가 이미 무조건 법인 계정을 요구해 결과가 같다. <b>우리 상태 —</b> Apple·Play 개발자 계정 모두 법인(Organization) 등록 확인 완료(D-U-N-S 68-826-5663, Hecto Innovation Co., Ltd.)<span class="bg cf">확정</span><span class="bg rs">해결</span></span>
+        <span class="src">Apple App Store Review Guidelines · 2025-11-13 개정으로 crypto exchanges 추가 · <a href="https://developer.apple.com/app-store/review/guidelines/#5.1.1" target="_blank" rel="noopener">원문 보기 →</a></span></div>
+      <div class="quo apple"><span class="qbadge">APPLE</span><b>3.1.5(i) Wallets:</b> Apps may facilitate virtual currency storage, provided they are <b>offered by developers enrolled as an organization</b>.
+        <span class="kr"><b>한글 해석 —</b> 앱은 가상화폐 보관 기능을 제공할 수 있다. 단, <b>조직(Organization)으로 등록된 개발자</b>가 제공하는 경우에 한한다.</span>
+        <span class="ins"><b>인사이트 —</b> 이 조항 자체엔 라이선스 요건이 없다(라이선스는 3.1.5(iii) 거래소 조항에만 있음). 요구는 오직 법인 계정 하나뿐이다. <b>우리 상태 — 충족 완료.</b> Apple 개발자 계정이 이미 Organization으로 등록되어 있어 이 조항의 유일한 요구사항이 해소됐다<span class="bg cf">확정</span><span class="bg rs">해결</span></span>
+        <span class="src">Apple App Store Review Guidelines · <a href="https://developer.apple.com/app-store/review/guidelines/#3.1.5" target="_blank" rel="noopener">원문 보기 →</a></span></div>
+    </div>
+  </details>
+  <details class="acc">
+    <summary>Google 정책 원문 3건 — 금융 서비스 정의 · 비수탁 제외 · 한국 VASP</summary>
+    <div class="accbody">
+      <div class="quo google"><span class="qbadge">GOOGLE</span>For the purposes of this policy, we consider financial products and services to be those related to <b>the management or investment of money and cryptocurrencies</b>, including personalized advice.
+        <span class="kr"><b>한글 해석 —</b> 본 정책에서 금융 상품·서비스란 <b>자금 및 암호화폐의 관리 또는 투자</b>와 관련된 것(개인 맞춤형 자문 포함)을 말한다.</span>
+        <span class="ins"><b>인사이트 —</b> 이 문장은 <b>&ldquo;금융 기능 선언&rdquo;을 의무화하는 넓은 범주 정의</b>일 뿐, 실제 라이선스 요건의 근거가 아니다. 이 정의 때문에 Play Console에서 &ldquo;암호화폐 지갑&rdquo; 선언은 반드시 해야 하지만, 그 이상의 실질 규제(국가별 라이선스)는 아래 별도 정책이 규율한다. <b>&ldquo;금융 상품으로 분류되는가&rdquo;와 &ldquo;라이선스가 필요한가&rdquo;는 서로 다른 층위의 질문</b>이다.</span>
+        <span class="src">Google Play — Financial Services 정책 · <a href="https://support.google.com/googleplay/android-developer/answer/9876821" target="_blank" rel="noopener">원문 보기 →</a></span></div>
+      <div class="quo google"><span class="qbadge">GOOGLE</span><b>Non-custodial wallets are out of scope</b> of the Cryptocurrency Exchanges and Software Wallets policy.
+        <span class="kr"><b>한글 해석 —</b> <b>비수탁 지갑</b>은 「암호화폐 거래소 및 소프트웨어 지갑」 정책의 <b>적용 범위에서 제외</b>된다.</span>
+        <span class="ins"><b>인사이트 —</b> 이 한 문장이 <b>이 정책 문서 전체(아래 한국 VASP 요건 포함)를 우리에게 적용되지 않게 만드는 스위치</b>다. 옥텟 MPC 비수탁 구조가 확정이므로, 이 문서가 규율하는 국가별 라이선스 요건은 우리에게 애초에 도달하지 않는다.<span class="bg rs">해결</span></span>
+        <span class="src">Google Play — Cryptocurrency Exchanges and Software Wallets 정책 · <a href="https://support.google.com/googleplay/android-developer/answer/16329703" target="_blank" rel="noopener">원문 보기 →</a></span></div>
+      <div class="quo google"><span class="qbadge">GOOGLE</span><b>South Korea:</b> The developer must have successfully filed a virtual asset service providers (VASP) Report with the Commissioner of the Korea Financial Intelligence Unit (KoFIU).
+        <span class="kr"><b>한글 해석 —</b> <b>대한민국:</b> 개발자는 한국 금융정보분석원(KoFIU) 원장에게 <b>가상자산사업자(VASP) 신고</b>를 완료한 상태여야 한다.</span>
+        <span class="ins"><b>인사이트 —</b> 이 문장만 떼어보면 무조건 신고를 요구하는 것처럼 읽히지만, <b>바로 위 &ldquo;비수탁은 정책 범위 밖&rdquo; 문장이 먼저 적용 대상을 가른다.</b> 이 조항은 정책 범위 안에 있는(=수탁형) 사업자에게만 해당하는 조건이다. <b>우리는 신고를 &ldquo;면제받는 것&rdquo;이 아니라, 이 조항이 규율하는 대상(수탁형) 자체가 아니다</b> — 표현을 정확히 구분해서 써야 한다.</span>
+        <span class="src">동일 정책 · 한국은 라이선스 요구 대상국으로 명시 · <a href="https://support.google.com/googleplay/android-developer/answer/16329703" target="_blank" rel="noopener">원문 보기 →</a></span></div>
+    </div>
+  </details>
+  <div class="note ok"><b>정리 — 두 구글 문서는 서로 다른 질문에 답한다.</b><br>
+  &ldquo;금융 상품·서비스&rdquo; 범주(Financial Services 정의, 크립토 포함 · 넓다) → <b>Play 금융 기능 선언은 필수</b><br>
+  그 범주 안에서 &ldquo;암호화폐 거래소·지갑&rdquo;을 다루는 하위 정책(Crypto Exchanges &amp; Software Wallets)이 <b>비수탁을 자기 적용범위에서 제외</b> → <b>라이선스·VASP 신고는 불필요</b><br>
+  넓은 범주에 속하는 것과, 그 범주 하위의 특정 라이선스 의무를 지는 것은 별개다 — 상충이 아니다.</div>
+
+  <div class="subhd"><span class="sn">3</span>그래서 무엇이 달라지는가 — 금융 앱 트랙의 실제 부담</div>
+  <div class="lead">&ldquo;금융 앱으로 분류된다&rdquo;는 것이 추상적 딱지가 아니라 <b>구체적 추가 절차 6개</b>로 나타난다.</div>
+  <table class="tbl"><tr><th class="cn">#</th><th style="width:190px">추가 절차</th><th>내용</th></tr>
+    <tr><td class="cn">1</td><td class="c">법인 계정 필수</td><td>개인 계정으로는 제출 불가. Apple·Play 양쪽 모두 Organization 자격 필요. <b>판매자명이 법인명과 일치</b>해야 한다 — 불일치가 독립적 리젝 사유가 된 사례가 있다<br>계정 등록 자체는 완료<span class="bg rs">해결</span> · 판매자명 일치 확인만 남음(P0 #3)</td></tr>
+    <tr><td class="cn">2</td><td class="c">Play 금융 기능 선언</td><td>App content &gt; Financial features에서 <b>&ldquo;암호화폐 지갑&rdquo;</b> 선택. Google이 앱 심사와 함께 이 선언을 검토한다. 한국 타겟이면 국가별 폼이 제공될 수 있다</td></tr>
+    <tr><td class="cn">3</td><td class="c">증빙 요구 가능성</td><td>Apple이 <i>documentary evidence demonstrating you have the necessary licenses and permissions</i>를 요구할 수 있다. <b>비수탁의 정답은 &ldquo;라이선스가 없다&rdquo;가 아니라 &ldquo;대상이 아니다&rdquo;를 입증하는 것</b>이다</td></tr>
+    <tr><td class="cn">4</td><td class="c">심사 기간 연장</td><td>규제산업 검증이 붙어 첫 제출 반려 사이클이 길어진다. Apple이 <b>어느 라이선스가 부족한지 특정해주지 않아</b> 한 달 이상 루프가 돈 사례가 있다</td></tr>
+    <tr><td class="cn">5</td><td class="c">공개 연락처</td><td>법인 제출 시 전화번호·이메일이 스토어 제품 페이지에 <b>공개 노출</b>된다. 암호화폐 앱은 피싱·사칭 문의가 많으므로 CS와 사전 합의가 필요하다</td></tr>
+    <tr><td class="cn">6</td><td class="c">출시 후 감시</td><td>규제산업 앱은 정책 개정·규제당국 요청에 따라 <b>사후 차단</b> 대상이 된다</td></tr>
+  </table>
+  <div class="note ok"><b>반대로, 금융 앱이어도 요구되지 않는 것</b><ul class="fl">
+    <li><b>VASP 신고 —</b> 비수탁이면 Play 정책 범위 밖이고, Apple 지갑 조항도 라이선스를 요구하지 않는다<span class="bg rs">해결</span></li>
+    <li><b>전자금융업 등록 증빙 —</b> 스토어가 특정 국내 라이선스를 요구하지는 않는다</li>
+    <li><b>도박·투자 관련 조항 —</b> 지갑 단독으로는 해당하지 않는다</li>
+    <li><b>게임물 등급분류 —</b> Play 문서가 <i>GRAC ratings are only issued for games</i>로 명시한다. IARC 설문만 필요하다<span class="bg rs">해결</span></li>
+  </ul></div>
+
+  <div class="secdiv"><span>실 행 계 획</span></div>
+
+  <!-- ══════════════════════ 2. 실행안 ══════════════════════ -->
+  <div class="modsep" id="plan"><span class="mn">2</span><h2>실행안 — 로드맵과 단계별 작업</h2></div>
+
+  <div class="subhd"><span class="sn">1</span>RMP — 로드맵<a class="more" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#rmp" target="_blank">로드맵 원문 RMP →</a></div>
+  <div class="lead">9월 말 출시를 전제로 역산했다. <b>각 단계 마감을 금요일로 두어 주말을 버퍼로 남긴 보수적 산정</b>이며, 그 결과 반려 대응에 3주(9/7~9/25)를 확보했다.</div>
+  <div class="flowlane">
+    <div class="fh"><span class="fnum">P</span>단계 흐름 — 무엇을, 언제</div>
+    <div class="fchain">
+      <div class="fbox mn">P0 즉시<span class="sb">8/13(목)~8/14(금) · 통제 밖 리드타임</span></div>
+      <span class="fsep">›</span>
+      <div class="fbox mn">P1 준비<span class="sb">8/17(월)~8/21(금) · 선행조건 확정</span></div>
+      <span class="fsep">›</span>
+      <div class="fbox mn">P2 사전검증<span class="sb">8/24(월)~8/28(금) · 구현 완료·클로즈드</span></div>
+      <span class="fsep">›</span>
+      <div class="fbox hd">P3 제출<span class="sb">8/31(월)~9/4(금) · Apple → Play</span></div>
+      <span class="fsep">›</span>
+      <div class="fbox gt">P4 반려대응<span class="sb">9/7(월)~9/25(금) · 이원화 채널</span></div>
+    </div>
+  </div>
+  <div class="note dang"><b>일정 전제부터 확인해야 한다.</b> 위 로드맵은 &ldquo;9월 말 출시&rdquo;를 가정한다. 출시일이 9월 초·중순이면 <b>버퍼가 존재하지 않으므로 일정 자체를 재검토해야 한다.</b> 📌 <b>출시 목표일 확정(8/14)이 이 로드맵의 선행 조건이다.</b></div>
+  <div class="note"><b>보수적 산정의 원칙 3가지</b><ul class="fl">
+    <li><b>마감은 영업일에 둔다</b> — 주말·공휴일 마감을 만들지 않고, 남는 주말을 지연 흡수 버퍼로 쓴다</li>
+    <li><b>개발 입력값을 앞으로 몰았다</b> — 보안 승인(8/18) · 법정 보존 항목(8/19) · CI/DI 결론(8/19)을 먼저 끝내 <b>개발 구현 창구 7영업일(8/20~8/28)</b>을 확보했다</li>
+    <li><b>스토어 마감보다 앞서 끝낸다</b> — Play target API 마감은 8/31이지만 완료 목표는 8/26으로 3영업일 앞에 둔다</li>
+  </ul></div>
+
+  <div class="subhd"><span class="sn">2</span>P0~P4 — 단계별 작업 표</div>
+
+  <div class="wk"><span class="wn">P0</span><span class="wt">즉시 — 리드타임이 우리 통제 밖인 것</span><span class="wd">8/13(목) ~ 8/14(금)</span></div>
+  <table class="tbl"><tr><th class="cn">#</th><th style="width:96px">담당</th><th>작업</th><th style="width:112px">막히면</th></tr>
+    <tr><td class="cn">1</td><td class="c"><span class="own">기획</span></td><td><span class="crit">⚠</span><b>옥텟에 영문 기술확인서 요청 — 8/14(금) 발송</b> · 임계값 구성 · 이용자 조각 필수 입력 여부 · 회사 조각 단독 결합 불가 보장 · 제출용 도해<br>회신 목표 8/21(금), 미회신 시 8/24(월) 에스컬레이션</td><td>비수탁 증명 불가</td></tr>
+    <tr><td class="cn">2</td><td class="c"><span class="own">개발</span></td><td><span class="crit">⚠</span><b>target API 36 대응 가능 여부 8/14(금) 확인</b> · Xcode 26 / iOS 26 SDK 빌드 시도 · 소셜·PASS 연동 호환성 점검<br>완료 목표 8/26(수) — Play 마감 8/31(월)보다 3영업일 앞</td><td>제출 불가</td></tr>
+    <tr><td class="cn">3</td><td class="c"><span class="own">기획</span></td><td><b>Apple·Play 계정 모두 Organization 등록 확인 완료</b>(D-U-N-S 68-826-5663, Hecto Innovation Co., Ltd.)<span class="bg cf">확정</span><span class="bg rs">해결</span><br>남은 확인 — 판매자명 법인명 일치 · Account Holder 재직 여부(8/14)</td><td>표기 불일치 시 리젝</td></tr>
+    <tr><td class="cn">4</td><td class="c"><span class="own">법무</span></td><td><b>VASP 비대상 의견서 착수(국·영문)</b> · 대법원 2024도10710 판결문 원문 확보 · <b>BIS ERN 신청 8/14(금) 착수</b>(10~15영업일)</td><td>증빙 대응 불가</td></tr>
+    <tr><td class="cn">5</td><td class="c"><span class="own">법무</span></td><td><b>FIU 비조치의견서·유권해석 신청 여부 결정</b> — 사후 리스크를 없애는 유일한 방법이나 9월과 병행 불가. <b>할지 말지를 8/14까지 정한다</b></td><td>출시 후 리스크 잔존</td></tr>
+    <tr><td class="cn">6</td><td class="c"><span class="own">기획</span> <span class="own">사업</span></td><td><b>출시 목표일 확정 · 판매 지역 대한민국 한정 확정 — 8/14(금)</b></td><td>역산 불가</td></tr>
+  </table>
+
+  <div class="wk"><span class="wn">P1</span><span class="wt">준비 — 선행조건 확정과 제출 패키지 제작</span><span class="wd">8/17(월) ~ 8/21(금)</span></div>
+  <table class="tbl"><tr><th class="cn">#</th><th style="width:96px">담당</th><th>작업</th><th style="width:112px">마감</th></tr>
+    <tr><td class="cn">7</td><td class="c"><span class="own">보안</span></td><td><b>심사용 우회 경로 보안 승인</b> — 화이트리스트 방식·프로덕션 로그 감시·출시 후 제거 시점 확정. <b>리뷰어 테스트 자금 오남용 통제</b> 방안 포함<br>개발 착수의 선행조건이므로 가장 먼저 끝낸다</td><td class="due"><b>8/18(화)</b></td></tr>
+    <tr><td class="cn">8</td><td class="c"><span class="own">법무</span> <span class="own">기획</span></td><td><span class="crit">⚠</span><b>계정 삭제 법정 보존 항목·기간 확정</b>(특금법·전자금융거래법·개인정보보호법 제21조) → <b>회원정책서 탈퇴 장 작성</b> → 신규 화면 정의(8/20 목)</td><td class="due"><b>8/19(수)</b></td></tr>
+    <tr><td class="cn">9</td><td class="c"><span class="own">데이터정책팀</span></td><td><b>CI vs DI 결론 확보</b> — 프라이버시 라벨 3자 정합의 선행조건. 목적이 중복 리워드 방지라면 DI가 목적 적합성에서 우월하다는 논거를 함께 제시한다</td><td class="due"><b>8/19(수)</b></td></tr>
+    <tr><td class="cn">10</td><td class="c"><span class="own">기획</span> <span class="own">법무</span></td><td><b>Play 금융 기능 선언 작성</b>(&ldquo;암호화폐 지갑&rdquo;) · <b>Play 정책 지원에 비수탁 구조 사전 문의 접수</b> → 서면 회신·티켓번호 보관<br>회신 리드타임 확보를 위해 조기 접수한다</td><td class="due"><b>8/19(수)</b></td></tr>
+    <tr><td class="cn">11</td><td class="c"><span class="own">개발</span></td><td><b>리뷰어 전용 계정 + 본인확인 스텁 + 고정 인증코드 + 실거래 테스트 자금 구현 착수</b> · 루팅·에뮬레이터 탐지 우회 경로<br>보안 승인(8/18) 직후 착수 → 완료 8/28(금)</td><td class="due">8/20(목) 착수</td></tr>
+    <tr><td class="cn">12</td><td class="c"><span class="own">개발</span></td><td><b>계정 삭제 인앱 플로우 + 웹 계정 삭제 요청 페이지</b> 제작 및 공개 URL 확보 (Play 필수)<br>화면 정의(8/20) 직후 착수 → 완료 8/28(금)</td><td class="due">8/20(목) 착수</td></tr>
+    <tr><td class="cn">13</td><td class="c"><span class="own">기획</span></td><td><b>영문 심사 노트 작성</b>(4000바이트) · <b>MPC 구조 도해(영문 1장)</b> · 전체 플로우 영문 캡션 화면녹화</td><td class="due">8/21(금)</td></tr>
+    <tr><td class="cn">14</td><td class="c"><span class="own">기획</span></td><td>카테고리 Finance 확정 · 연령등급 설문 응답 · IARC 설문 · 한국 개발자 정보 등록 · 공개 연락처 CS 합의</td><td class="due">8/21(금)</td></tr>
+  </table>
+
+  <div class="wk"><span class="wn">P2</span><span class="wt">사전 검증 — 실제 심사 전에 막힐 곳을 찾는다</span><span class="wd">8/24(월) ~ 8/28(금)</span></div>
+  <table class="tbl"><tr><th class="cn">#</th><th style="width:96px">담당</th><th>작업</th><th style="width:112px">마감</th></tr>
+    <tr><td class="cn">15</td><td class="c"><span class="own">법무</span> <span class="own">기획</span></td><td><b>프라이버시 3자 정합 대조</b> — Apple App Privacy · Play Data safety · 개인정보 처리방침<br>선행 조건 = 데이터정책팀 CI/DI 결론(8/19)</td><td class="due">8/26(수)</td></tr>
+    <tr><td class="cn">16</td><td class="c"><span class="own">개발</span></td><td><b>빌드 요건 완료</b> — target API 36 · iOS 26 SDK · 16 KB 정렬 검증<br>Play 마감 8/31(월)보다 3영업일 앞에 끝낸다</td><td class="due"><b>8/26(수)</b></td></tr>
+    <tr><td class="cn">17</td><td class="c"><span class="own">개발</span></td><td><b>Play 클로즈드 트랙에 먼저 제출</b> — 금융 기능 선언 심사를 프로덕션 이전에 통과시킨다. <b>여기서 한국 VASP 폼이 뜨는지 실제로 확인된다</b></td><td class="due">8/27(목)</td></tr>
+    <tr><td class="cn">18</td><td class="c"><span class="own">개발</span></td><td><b>리뷰어 시나리오 자체 검증</b> — 해외 IP·비한국 통신사 환경에서 데모 계정으로 전 기능 도달 확인 · <b>실제 전송 버튼을 눌러 트랜잭션 완결 확인</b> · 에뮬레이터에서 앱이 뜨는지 확인</td><td class="due">8/28(금)</td></tr>
+    <tr><td class="cn">19</td><td class="c"><span class="own">법무</span></td><td><span class="crit">⚠</span><b>제출 서류 패키지 완성</b> — 참고 §1의 5종 전부. 첫 제출에 한 번에 넣는다</td><td class="due"><b>8/28(금)</b></td></tr>
+    <tr><td class="cn">20</td><td class="c"><span class="own">법무</span></td><td>yesTrade 전략물자 <b>사전판정 신청</b> · ERN 발급 확인 · 연간 자기분류 보고 캘린더 등록(매년 2/1)</td><td class="due">8/28(금)</td></tr>
+  </table>
+
+  <div class="wk"><span class="wn">P3</span><span class="wt">제출 — Apple 먼저, 피드백을 Play에 반영</span><span class="wd">8/31(월) ~ 9/4(금)</span></div>
+  <table class="tbl"><tr><th class="cn">#</th><th style="width:96px">담당</th><th>작업</th><th style="width:112px">마감</th></tr>
+    <tr><td class="cn">21</td><td class="c"><span class="own">개발</span></td><td><b>Apple 1차 제출.</b> 반려 사이클이 짧아 먼저 넣는다. 서류를 <b>첫 제출부터 완전한 상태로</b> 첨부한다 — 나눠 내면 루프가 길어진다</td><td class="due"><b>8/31(월)</b></td></tr>
+    <tr><td class="cn">22</td><td class="c"><span class="own">개발</span></td><td><b>Play 프로덕션 제출.</b> Apple 피드백의 지적을 선반영한다</td><td class="due">9/2(수)</td></tr>
+    <tr><td class="cn">23</td><td class="c"><span class="own">기획</span></td><td><b>반려 대응 담당·연락 체계 확정.</b> Apple 이의신청은 <b>제출당 1회만</b> 가능하고, 추가 정보 요청에는 이의신청 전에 먼저 답해야 한다</td><td class="due">9/4(금)</td></tr>
+  </table>
+
+  <div class="wk"><span class="wn">P4</span><span class="wt">반려 대응 사이클</span><span class="wd">9/7(월) ~ 9/25(금)</span></div>
+  <div class="iawrap">
+  <table class="iatbl">
+    <tr><th>예상 반려 사유</th><th>대응 준비물</th><th style="width:80px">소요</th></tr>
+    <tr><td class="d1">2.1 — 심사자가 기능을 확인할 수 없음</td><td class="fn">데모 계정 재점검 · <b>실거래 테스트 자금 재충전</b> · 화면녹화 재첨부 · 심사 노트 보강</td><td class="ct">3~7일</td></tr>
+    <tr><td class="d1">3.1.5(iii) — 라이선스 증빙 요구</td><td class="fn"><b>참고 §1의 5종 전부.</b> &ldquo;라이선스가 없다&rdquo;가 아니라 <b>&ldquo;대상이 아니다&rdquo;</b>로 답한다</td><td class="ct">5~10일</td></tr>
+    <tr><td class="d1">5.1.1(v) — 계정 삭제</td><td class="fn">인앱 경로 스크린샷 + 웹 URL + 규제산업 예외 근거</td><td class="ct">3~7일</td></tr>
+    <tr><td class="d1">프라이버시 라벨 불일치</td><td class="fn">3자 대조표 + 수정본</td><td class="ct">3~5일</td></tr>
+    <tr><td class="d1">Play 금융 기능 선언 — 한국 VASP</td><td class="fn"><b>사전 문의 회신 티켓번호</b> + 비수탁 증명 문서</td><td class="ct">7일+</td></tr>
+  </table>
+  </div>
+  <div class="note warn"><b>3주(9/7~9/25)는 반려 2~3회를 전제한 최소 버퍼다.</b> 위 소요를 합산하면 한 사이클에 최대 10일이 걸릴 수 있어, 2회 반려까지가 이 기간의 현실적 한계다. <b>1차 제출을 8/31로 앞당긴 이유가 여기에 있다.</b></div>
+
+  <div class="lead" style="margin-top:16px"><b>반려 통보를 받으면 채널부터 나눈다.</b> 지적 성격에 따라 대응 창구가 다르고, 잘못된 창구로 보내면 시간만 소모된다.</div>
+  <table class="tbl"><tr><th style="width:170px">채널</th><th>대상</th><th>방법</th></tr>
+    <tr><td class="c">Resolution Center<br>(수정 후 재제출)</td><td>버그·UI 지적, 계정 삭제 누락 등 <b>단순 지적</b> — 반려의 90% 이상이 여기 해당</td><td>즉시 코드·화면을 수정하고 &ldquo;지적 사항을 반영해 OO을 보완한 새 빌드를 제출함&rdquo;과 같이 <b>사실 중심으로 짧게</b> 답변한다. 24~72시간 내 재승인되는 사례가 많다</td></tr>
+    <tr><td class="c">App Review Board<br>(공식 이의제기)</td><td>가스비를 회사 수익으로 오인, 비수탁인데 VASP 라이선스를 지속 요구하는 등 <b>비즈니스 모델 자체에 대한 오해</b></td><td>공식 Appeal 폼을 제출한다. 감정적 호소 대신 <b>위반이라고 지목된 조항 번호를 정확히 짚고</b> 우리 구조가 해당하지 않는 이유를 논증한다. <b>동일 아키텍처의 타사 승인 사례</b>(예: MetaMask 등 비수탁 지갑)를 객관적 근거로 첨부하면 효과적이다</td></tr>
+  </table>
+  <div class="note dang"><b>App Review Board 항소는 제출당 통상 1회다.</b> 원 심사관이 아닌 시니어 리뷰어가 재검토하므로, <b>첫 항소에 참고 §1의 증명 패키지 5종을 전부 첨부</b>해야 한다. 또한 <b>Apple 신속심사는 &ldquo;출시일이 다가온다&rdquo;로는 인정받기 어렵고</b>(치명적 버그·이벤트 연계로 한정), <b>Google에는 신속심사 제도가 없다</b> — 일정을 앞당겨 잡아야 하는 근본 이유다.</div>
+
+  <div class="secdiv"><span>참 고 자 료</span></div>
+
+  <!-- ══════════════════════ 3. 참고 ══════════════════════ -->
+  <div class="modsep" id="ref"><span class="mn">3</span><h2>참고 — 선제 대응 자료</h2></div>
+
+  <div class="subhd"><span class="sn">1</span>선제 대응① — 비수탁 증명 패키지<a class="more" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#pre" target="_blank">로드맵 원문 PRE →</a></div>
+  <div class="lead">이 문서에서 가장 중요한 자료다. <b>반려를 받은 뒤 대응하는 것이 아니라, 첫 제출에 넣어야 하는 서류 5종</b>이다. 전체 완성 마감은 <b>8/28(금)</b>이다.</div>
+  <div class="iawrap">
+  <table class="iatbl">
+    <tr><th style="width:34px">#</th><th style="width:180px">서류</th><th>목적</th><th style="width:76px">담당</th><th style="width:96px">리드타임</th></tr>
+    <tr><td class="ct">1</td><td class="d1"><span class="crit">⚠</span>옥텟 영문 기술확인서</td><td class="fn">① 서명 임계값 구성 ② 이용자 기기 조각이 <b>필수 입력</b>임 ③ 회사 보유 조각만으로 임계값 충족이 불가함 — 이 세 문장이 <b>비수탁 증명의 유일한 원천</b>이다</td><td class="ct"><span class="own">옥텟</span></td><td class="ct">통제 밖<br><b>8/14 발송</b></td></tr>
+    <tr><td class="ct">2</td><td class="d1">MPC 키 관리 구조 도해 (영문 1장)</td><td class="fn">심사자가 30초에 이해할 그림. <b>회사의 무능력</b> 관점으로 그린다 — &ldquo;회사 단독으로는 서명 임계값을 충족할 수 없다&rdquo;</td><td class="ct"><span class="own">기획</span></td><td class="ct">2일</td></tr>
+    <tr><td class="ct">3</td><td class="d1">VASP 비대상 법무 의견서 (영·국문)</td><td class="fn">특금법상 본 구조가 가상자산사업자 신고 대상이 아니라는 판단과 근거. <b>&ldquo;라이선스가 없다&rdquo;가 아니라 &ldquo;대상이 아니다&rdquo;를 말하는 문서</b></td><td class="ct"><span class="own">법무</span></td><td class="ct">10~15일<br><b>8/14 착수</b></td></tr>
+    <tr><td class="ct">4</td><td class="d1">법인 등기부등본 · 보유 라이선스 (영문)</td><td class="fn">5.1.1(ix)의 <i>legal entity</i> 입증. 헥토가 보유한 금융 관련 등록증이 있으면 함께 첨부. <b>D-U-N-S 68-826-5663 확보 완료</b><span class="bg cf">확정</span><span class="bg rs">해결</span> — 등기부등본 영문 번역·공증만 남음</td><td class="ct"><span class="own">법무</span></td><td class="ct">3~5일</td></tr>
+    <tr><td class="ct">5</td><td class="d1">영문 심사 노트 (Apple 4000바이트)</td><td class="fn">비수탁 구조 · 채굴 없음 · PASS 설명 · 데모 계정 · 계정삭제 설계 근거를 <b>선제적으로</b> 기재</td><td class="ct"><span class="own">기획</span></td><td class="ct">2일</td></tr>
+  </table>
+  </div>
+  <div class="note dang"><b>1번이 크리티컬 패스다.</b> 현재 우리가 가진 것은 국문 제품 문서의 문장 한 줄이며, 심사에 제출할 수 있는 형태가 아니다. <b>옥텟 회신 리드타임이 우리 통제 밖이므로 8/14(금)에 발송하고, 8/21(금)까지 회신이 없으면 8/24(월) 에스컬레이션한다.</b></div>
+  <div class="note"><b>Play 측 대응은 서류가 아니라 절차다.</b> 같은 내용을 <b>Play 정책 지원 사전 문의</b>(8/19 접수)에 첨부해 서면 회신·티켓번호를 확보한다. 이것이 반려 시 유일한 근거가 된다.</div>
+
+  <div class="subhd"><span class="sn">2</span>선제 대응② — 하드 데드라인<a class="more" href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html#hrd" target="_blank">로드맵 원문 HRD →</a></div>
+  <div class="lead">아래 항목은 기획·심사와 무관하게 <b>빌드·계정 레벨에서 제출을 차단</b>한다. 각 카드의 초록 배지가 <b>스토어 마감보다 앞서 잡은 우리 목표일</b>이다.</div>
+  <div class="dl">
+    <div class="dlc"><div class="dd">2026-08-31 (월)</div><div class="dt">Play — 신규 앱 target API 36</div><div class="dg">우리 목표 8/26(수)</div><div class="ds">Android 16 미달이면 <b>제출 자체가 거부</b>된다. 연장 신청 제도가 있으나 기존 앱 구제용이므로 의존하지 않는다</div></div>
+    <div class="dlc done"><div class="dd">2026-04-28 (발효)</div><div class="dt">Apple — iOS 26 SDK 빌드</div><div class="dg">가능여부 확인 8/14(금)</div><div class="ds">Xcode 26 / iOS 26 SDK로 빌드하지 않으면 App Store Connect 업로드가 거부된다. <b>이미 시행 중이므로 즉시 확인이 필요하다</b></div></div>
+    <div class="dlc"><div class="dd">2026-09-30 (수)</div><div class="dt">Android developer verification</div><div class="dg">우리 목표 8/21(금)</div><div class="ds">Play Console에 앱 등록이 되어 있어야 한다. 대부분 자동 등록되므로 <b>상태 확인 1일</b>로 끝난다</div></div>
+    <div class="dlc"><div class="dd">일자 상충</div><div class="dt">Play — 16 KB page size</div><div class="dg">우리 목표 8/26(수)</div><div class="ds">Google 문서 3곳이 2025-11-01 / 2026-05-31 / 2027-02-01로 엇갈린다. <b>지금 필수로 간주하고 준수</b>하는 것이 안전하다</div></div>
+  </div>
+  <div class="note ok"><b>16 KB 리스크는 연동 방식에 좌우된다.</b> 옥텟 SDK를 앱에 넣지 않고 <b>서버 API로 처리</b>하는 방식이면 MPC 네이티브 라이브러리가 앱 바이너리에 들어오지 않는다. 같은 이유로 <b>옥텟 SDK의 프라이버시 매니페스트·서명 의무도 발생하지 않는다.</b><br>
+  <span class="crit">⚠</span>단 이용자 기기에 키 조각을 보관하는 것은 그대로이므로, <b>조각 저장·처리에 어떤 라이브러리가 쓰이는지</b>는 확인이 필요하다(개발 회신 대상)</div>
+
+  <div class="foot">
+    상세 근거·정책 원문 해석 전체는 <a href="월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html" target="_blank">월렛앱_스토어등록_심사대응로드맵_v1.1_20260813.html</a> 참고 · 담당자별 실행 체크리스트는 <a href="월렛앱_스토어등록_체크리스트_v1.0_20260813.html" target="_blank">월렛앱_스토어등록_체크리스트_v1.0_20260813.html</a> 참고<br>
+    <b>일정은 영업일 마감 기준으로 보수적으로 산정했다. 심층 로드맵 v1.1의 주(週) 단위 일정과 날짜 표기가 다르며, 이 문서의 날짜를 기준으로 한다.</b>
+  </div>
+
+</div>
+</body>
+</html>
