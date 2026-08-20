@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>비수탁 월렛 서비스 Apple·Google 스토어 등록 준비 가이드</title>
+  <style>
+    :root{--navy:#17233b;--blue:#315efb;--sky:#edf3ff;--green:#16856b;--green-bg:#eaf8f3;--amber:#a86400;--amber-bg:#fff6df;--red:#b42318;--red-bg:#fff0ee;--ink:#202632;--muted:#657083;--line:#dbe2ec;--paper:#fff;--bg:#f3f5f8}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;line-height:1.65}
+    main{max-width:1080px;margin:0 auto;padding:40px 28px 80px}.hero{background:linear-gradient(135deg,#142039,#253b68);color:#fff;border-radius:20px;padding:42px 46px;box-shadow:0 12px 30px rgba(20,32,57,.15)}
+    .eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;opacity:.75}.hero h1{font-size:32px;line-height:1.3;margin:9px 0 14px}.hero p{margin:0;max-width:820px;color:#dce5fa}.meta{margin-top:20px;font-size:13px;color:#bac8e5}
+    section{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:30px 34px;margin-top:22px}h2{color:var(--navy);font-size:23px;margin:0 0 18px}h3{font-size:18px;color:var(--navy);margin:28px 0 10px;padding-top:4px}h4{font-size:15px;margin:18px 0 7px}p{margin:8px 0}ul,ol{padding-left:22px;margin:10px 0}li{margin:5px 0}
+    .lead{font-size:17px}.callout{padding:16px 18px;border-radius:12px;margin:16px 0}.info{background:var(--sky);border-left:4px solid var(--blue)}.ok{background:var(--green-bg);border-left:4px solid var(--green)}.warn{background:var(--amber-bg);border-left:4px solid #d58a00}.no{background:var(--red-bg);border-left:4px solid var(--red)}
+    table{width:100%;border-collapse:collapse;margin:14px 0 20px;font-size:14px}th{background:#f1f4f8;color:#344054;text-align:left}th,td{border:1px solid var(--line);padding:11px 12px;vertical-align:top}.tag{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:700;white-space:nowrap}.required{background:#eaf0ff;color:#244ac8}.done{background:var(--green-bg);color:#0d6b56}.conditional{background:var(--amber-bg);color:#925900}.excluded{background:#eef0f3;color:#667085}
+    .steps{counter-reset:step;list-style:none;padding:0}.steps li{position:relative;padding:12px 12px 12px 48px;margin:8px 0;background:#f8fafc;border:1px solid #e5e9f0;border-radius:10px}.steps li:before{counter-increment:step;content:counter(step);position:absolute;left:14px;top:12px;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;text-align:center;line-height:24px;font-weight:700;font-size:12px}
+    code{background:#f0f3f8;border-radius:5px;padding:2px 5px;color:#243b69}.draft{background:#111827;color:#e5e7eb;border-radius:12px;padding:20px;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;line-height:1.65;overflow:auto}.source-list a{color:#244dc1;text-decoration:none}.source-list a:hover{text-decoration:underline}.small{font-size:13px;color:var(--muted)}
+    .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.card{border:1px solid var(--line);border-radius:12px;padding:16px}.card b{display:block;color:var(--navy);margin-bottom:5px}.apple{border-top:4px solid #4b5563}.google{border-top:4px solid #4285f4}.scope{border-top:4px solid var(--green)}
+    @media(max-width:760px){main{padding:20px 14px 50px}.hero{padding:30px 24px}.hero h1{font-size:25px}section{padding:23px 20px}.summary-grid{grid-template-columns:1fr}table{font-size:13px;display:block;overflow-x:auto}}
+    @media print{body{background:#fff}main{max-width:none;padding:0}.hero,section{box-shadow:none;break-inside:avoid}.hero{border-radius:0}a{color:inherit;text-decoration:none}}
+  </style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div class="eyebrow">HECTO WALLET · STORE POLICY GUIDE</div>
+    <h1>비수탁 월렛 서비스<br>Apple·Google 스토어 등록 준비 가이드</h1>
+    <p>스토어 공식 정책을 기준으로 실제 처리해야 하는 사항만 정리한 실행 문서입니다. 일반 앱 공통 준비사항과 월렛 특수사항을 구분하고, Apple과 Google의 제출 절차를 각각 설명합니다.</p>
+    <div class="meta">기준일 2026-08-14 · 대한민국 우선 출시 · MPC 기반 비수탁 월렛</div>
+  </header>
+
+  <section>
+    <h2>한눈에 보는 실행 로드맵</h2>
+    <p class="lead">일반 앱 등록을 위해 이미 준비한 사항은 재사용하고, 아래 순서대로 <strong>월렛 기능에 필요한 추가 확인과 콘솔 입력</strong>만 처리합니다.</p>
+    <table>
+      <tr><th style="width:9%">단계</th><th style="width:23%">해야 할 일</th><th>처리방법</th><th style="width:17%">완료 결과</th></tr>
+      <tr><td><strong>1</strong></td><td>출시 기능 확정</td><td>현재 버전에 지갑 생성·잔액조회·입금·사용자 승인 전송 외에 거래소, 스왑, 스테이킹, 리워드 등 추가 금융기능이 있는지 확인합니다.</td><td>최종 기능목록</td></tr>
+      <tr><td><strong>2</strong></td><td>기존 정책 정합성 확인</td><td>개인정보처리방침, Apple App Privacy, Google Data safety, 계정삭제 기능에 지갑주소·거래정보·MPC 키 조각 처리내용이 반영됐는지 확인합니다.</td><td>기존 자료 수정 또는 확인 완료</td></tr>
+      <tr><td><strong>3</strong></td><td>Apple 제출정보 입력</td><td>Organization 상태를 확인하고, App Review Notes에 비수탁 월렛 설명과 메뉴경로를 영문으로 작성합니다. 리뷰어 계정을 입력하고 암호화 사용 질문에 답변합니다.</td><td>Apple 심사 제출 가능</td></tr>
+      <tr><td><strong>4</strong></td><td>Google 선언정보 입력</td><td>Financial features declaration에서 <code>Cryptocurrency wallet</code>을 선택합니다. App access, Data safety, 계정삭제 URL도 최종 확인합니다.</td><td>Google 심사 제출 가능</td></tr>
+      <tr><td><strong>5</strong></td><td>심사 제출 및 질의 대응</td><td>최초에는 추가 기술·법률문서를 제출하지 않습니다. 스토어가 비수탁 구조를 질문하는 경우에만 개발·보안·옥텟의 사실확인을 받아 설명자료를 제출합니다.</td><td>심사 대응 기록</td></tr>
+    </table>
+    <div class="summary-grid">
+      <div class="card apple"><b>현재 새로 작성</b>Apple 영문 App Review Notes</div>
+      <div class="card google"><b>현재 새로 입력</b>Google Financial features declaration</div>
+      <div class="card scope"><b>기존 준비사항 재확인</b>개인정보·계정삭제·리뷰어 계정·Apple 암호화 질문</div>
+    </div>
+    <div class="callout info"><strong>현재 별도로 발급받을 문서는 없습니다.</strong> 법률의견서, MPC 기술확인서, 시연영상, 금융 라이선스는 최초 심사 준비물에 포함하지 않습니다.</div>
+  </section>
+
+  <section>
+    <h2>1. 결론</h2>
+    <p class="lead">현재 금융·월렛 특성 때문에 새롭게 처리해야 하는 핵심사항은 <strong>Apple 심사노트 작성</strong>과 <strong>Google 금융기능 선언</strong>입니다.</p>
+    <div class="summary-grid">
+      <div class="card apple"><b>Apple</b>Organization 계정은 완료되었습니다. App Review Notes에서 비수탁 월렛 구조와 기능범위를 설명합니다.</div>
+      <div class="card google"><b>Google</b>Play Console의 Financial features declaration에서 <code>Cryptocurrency wallet</code>을 선택합니다.</div>
+      <div class="card scope"><b>공통</b>기존 개인정보·계정삭제·리뷰어 계정 준비가 월렛 기능과 일치하는지만 재확인합니다.</div>
+    </div>
+    <div class="callout ok"><strong>별도의 VASP 비대상 법률의견서, 기술확인서, 금융 라이선스, 기능 시연영상은 최초 심사 필수 제출물이 아닙니다.</strong> 스토어가 추가로 요청할 때 사실관계에 맞춰 대응합니다.</div>
+  </section>
+
+  <section>
+    <h2>2. 적용 전제</h2>
+    <table>
+      <tr><th>구분</th><th>현재 전제</th></tr>
+      <tr><td>출시지역</td><td>대한민국 우선 출시</td></tr>
+      <tr><td>서비스 유형</td><td>MPC 기반 비수탁 가상자산 월렛</td></tr>
+      <tr><td>자산 통제</td><td>헥토가 고객 승인 없이 자산을 단독 이전할 수 없음</td></tr>
+      <tr><td>제공 기능</td><td>지갑 생성·잔액 조회·입금주소 확인·사용자 승인 온체인 전송</td></tr>
+      <tr><td>미제공 기능</td><td>거래소·매매중개·원화 입출금·스왑·예치·스테이킹·채굴</td></tr>
+      <tr><td>개발자 계정</td><td>Apple Organization 등록 완료</td></tr>
+      <tr><td>심사 접근</td><td>PASS 등 인증이 완료된 리뷰어 계정 제공 예정</td></tr>
+    </table>
+    <p class="small">위 전제가 변경되면 스토어 선언과 추가 라이선스 검토도 다시 수행해야 합니다.</p>
+  </section>
+
+  <section>
+    <h2>3. Apple App Store</h2>
+
+    <h3>3.1 Organization 개발자 계정 확인</h3>
+    <table>
+      <tr><th>상태</th><th>무엇을</th><th>왜</th><th>처리</th></tr>
+      <tr><td><span class="tag done">완료</span></td><td>Apple Developer 계정 유형</td><td>Apple 정책 3.1.5(i)는 가상화폐 저장을 지원하는 월렛을 Organization 개발자가 제공하도록 요구합니다.</td><td>현재 Organization이므로 추가 서류 없이 법인명과 판매자명만 최종 확인합니다.</td></tr>
+    </table>
+
+    <h3>3.2 스토어 카테고리 선택</h3>
+    <table>
+      <tr><th>선택지</th><th>선택 기준</th><th>판단</th></tr>
+      <tr><td>Finance</td><td>지갑 생성·코인 보유·입출금이 앱의 주된 목적</td><td>독립 월렛 앱이라면 정책 정의상 가장 자연스러운 선택입니다.</td></tr>
+      <tr><td>Lifestyle</td><td>생활·포인트·리워드 서비스가 주된 경험이고 지갑은 부가 기능</td><td>밀크·마이비와 같은 포지션일 때 가능하지만, 월렛 정책 적용이 면제되지는 않습니다.</td></tr>
+    </table>
+    <div class="callout info">Apple 정책 2.3.5는 앱에 가장 적절한 카테고리를 선택하도록 요구하며, 현저하게 부적절한 경우 Apple이 카테고리를 변경할 수 있다고 안내합니다. 카테고리는 기능을 숨기는 수단으로 사용하지 않습니다.</div>
+
+    <h3>3.3 App Review Information – Notes 작성</h3>
+    <table>
+      <tr><th>구분</th><th>내용</th></tr>
+      <tr><td>무엇을</td><td>비수탁 월렛 구조와 앱의 실제 기능범위를 리뷰어에게 설명합니다.</td></tr>
+      <tr><td>왜</td><td>수탁형 월렛·거래소로 오인되는 것을 줄이고, 리뷰어가 주요 기능을 정확하게 확인하도록 돕습니다.</td></tr>
+      <tr><td>어디서</td><td>App Store Connect → 해당 앱 → 제출 버전 → <code>App Review Information</code> → <code>Notes</code></td></tr>
+      <tr><td>언어</td><td>Apple은 모든 언어를 허용하지만, 해외 리뷰어의 이해를 위해 영문 작성을 권장합니다.</td></tr>
+      <tr><td>담당</td><td>서비스 기획 작성 → 개발·보안 사실확인 → 제출 담당자 입력</td></tr>
+    </table>
+    <h4>권장 입력 초안</h4>
+    <div class="draft">This app provides a non-custodial cryptocurrency wallet using MPC-based key management.
+
+Users retain control over their wallet and must directly authorize each blockchain transaction. Hecto Innovation cannot independently access, transfer, or dispose of users' cryptocurrency assets.
+
+The app does not provide cryptocurrency exchange, brokerage, custodial, fiat on-ramp/off-ramp, staking, swap, or mining services. It supports wallet creation, balance viewing, receiving cryptocurrency, and user-authorized on-chain transfers.
+
+A fully verified review account has been provided in the Sign-In Information section and does not require additional identity verification.
+
+Key review paths:
+- Wallet: [menu path]
+- Receive: [menu path]
+- Send: [menu path]
+- Account deletion: [menu path]</div>
+    <p class="small">실제 기능과 다른 문장은 삭제하거나 수정합니다. Notes에는 장문의 법률논증이나 첨부자료를 선제적으로 넣지 않습니다.</p>
+
+    <h3>3.4 리뷰어 로그인 정보</h3>
+    <table>
+      <tr><th>상태</th><th>처리</th></tr>
+      <tr><td><span class="tag done">일반 심사 준비 완료</span></td><td><code>Sign-in required</code> 영역에 계정정보를 입력하고, 인증이 완료된 계정이 만료되지 않으며 모든 주요 기능에 접근 가능한지만 확인합니다. 월렛 전용 별도 영상이나 별도 바이너리는 준비하지 않습니다.</td></tr>
+    </table>
+
+    <h3>3.5 개인정보 및 계정삭제 정합성 확인</h3>
+    <table>
+      <tr><th>무엇을</th><th>어떻게</th><th>왜</th></tr>
+      <tr><td>App Privacy 및 개인정보처리방침</td><td>지갑주소·온체인 거래정보·기기정보·보안로그·옥텟/SDK 처리정보가 실제와 일치하는지 확인합니다.</td><td>Apple은 앱과 제3자 SDK의 데이터 처리방식을 정확하게 신고하도록 요구합니다.</td></tr>
+      <tr><td>앱 내 계정삭제</td><td>기존 삭제경로에 서비스 계정, 서버 키 조각, 보존정보, 온체인 기록의 불변성에 관한 안내가 반영되었는지 확인합니다.</td><td>계정을 생성할 수 있는 앱은 앱 안에서 계정삭제를 시작할 수 있어야 합니다.</td></tr>
+    </table>
+
+    <h3>3.6 암호화 수출규정 질문</h3>
+    <table>
+      <tr><th>무엇을</th><th>어떻게</th><th>주의사항</th></tr>
+      <tr><td>App Store Connect Export Compliance 질문</td><td>앱이 사용하는 암호화 방식과 SDK 정보를 개발·보안팀이 확인한 후 콘솔 질문에 답합니다.</td><td>BIS ERN·CCATS를 먼저 발급받는 것이 아닙니다. 콘솔 응답 결과 추가문서가 요구되는 경우에만 후속 검토합니다.</td></tr>
+    </table>
+    <p>사전 확인자료: 옥텟 SDK 버전, 표준 암호 알고리즘, 자체 암호화 구현 여부, 공급사의 ECCN·CCATS 보유 여부.</p>
+
+    <h3>3.7 Apple 기능 제한 체크</h3>
+    <table>
+      <tr><th>기능</th><th>현재 처리</th></tr>
+      <tr><td>가상자산 거래소·매매</td><td>미제공. 향후 추가 시 국가별 인허가 및 Apple 3.1.5(iii) 재검토</td></tr>
+      <tr><td>온디바이스 채굴</td><td>미제공</td></tr>
+      <tr><td>과업 수행 대가로 코인 지급</td><td>미제공 여부 확인. Apple 3.1.5(v)는 다운로드·추천·SNS 게시 등의 과업 대가로 가상화폐를 지급하는 구조를 제한합니다.</td></tr>
+      <tr><td>가상자산으로 디지털 기능 잠금해제</td><td>미제공 여부 확인. Apple IAP 정책과 충돌하지 않도록 합니다.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>4. Google Play</h2>
+
+    <h3>4.1 스토어 카테고리 선택</h3>
+    <p>Google의 카테고리와 태그는 사용자가 앱을 검색·발견하는 데 사용됩니다. Lifestyle을 선택할 수 있으나 실제 금융기능 선언과는 별개입니다.</p>
+    <table>
+      <tr><th>서비스 주목적</th><th>권장 카테고리</th></tr>
+      <tr><td>독립적인 코인 지갑·입출금</td><td>Finance</td></tr>
+      <tr><td>생활·포인트·리워드 중심, 월렛은 부가기능</td><td>Lifestyle 선택 가능</td></tr>
+    </table>
+
+    <h3>4.2 Financial features declaration</h3>
+    <table>
+      <tr><th>구분</th><th>내용</th></tr>
+      <tr><td>무엇을</td><td><code>Cryptocurrency wallet</code>을 선택합니다.</td></tr>
+      <tr><td>왜</td><td>Google은 공개·테스트 트랙을 포함한 모든 게시 앱에 실제 금융기능을 정확하게 선언하도록 요구합니다.</td></tr>
+      <tr><td>어디서</td><td>Play Console → <code>Policy and programs</code> → <code>App content</code> → <code>Financial features</code></td></tr>
+      <tr><td>담당</td><td>서비스 기획이 기능목록을 확인하고 콘솔 제출권한 보유자가 저장·제출합니다.</td></tr>
+    </table>
+    <ol class="steps">
+      <li>대상 앱의 <code>App content</code>에서 Financial features의 <code>Start</code>를 선택합니다.</li>
+      <li><code>Cryptocurrency wallet</code>을 선택합니다.</li>
+      <li>거래소·대출·주식 등 제공하지 않는 기능은 선택하지 않습니다.</li>
+      <li>추가문서 화면이 나타나는지 확인합니다. 요구되지 않으면 별도 파일을 제출하지 않습니다.</li>
+      <li>내용을 저장하고 Policy status에서 처리상태를 확인합니다.</li>
+    </ol>
+    <h4>현재 예상 선언값</h4>
+    <table>
+      <tr><th>항목</th><th>선택</th><th>비고</th></tr>
+      <tr><td>Cryptocurrency wallet</td><td><strong>선택</strong></td><td>비수탁 여부와 관계없이 사용자에게 가상자산 지갑 기능을 제공</td></tr>
+      <tr><td>Cryptocurrency exchange</td><td>미선택</td><td>매매·교환 서비스를 직접 제공하지 않음</td></tr>
+      <tr><td>Tokenised digital asset sales/trading/awards</td><td>미선택</td><td>NFT·토큰 판매·보상 기능이 없는 현재 전제</td></tr>
+      <tr><td>Rewards, points and other incentives</td><td>미선택</td><td>리워드·포인트 기능이 없는 현재 전제</td></tr>
+      <tr><td>Mobile payments and digital wallets</td><td>기능문구 확인 후 판단</td><td>일반 결제용 전자지갑이 아니라 가상자산 지갑만 제공한다면 중복 선택하지 않는 방향</td></tr>
+      <tr><td>My app doesn’t provide any financial features</td><td><strong>선택 불가</strong></td><td>Cryptocurrency wallet 기능이 존재</td></tr>
+    </table>
+
+    <h3>4.3 비수탁 월렛의 국가별 라이선스 정책</h3>
+    <div class="callout ok"><strong>Google은 비수탁 월렛을 Cryptocurrency Exchanges and Software Wallets Policy의 적용범위에서 제외합니다.</strong> 따라서 현재 전제에서는 국가별 수탁 월렛·거래소 라이선스 문서를 선제적으로 제출하지 않습니다.</div>
+    <p>다만 다음 기능이 추가되면 다시 검토합니다.</p>
+    <ul>
+      <li>헥토 또는 제휴사의 사용자 자산 단독 통제</li>
+      <li>가상자산 매매·교환·중개</li>
+      <li>원화 입출금</li>
+      <li>스왑·예치·스테이킹</li>
+      <li>사용자 승인 없는 복구 또는 거래서명</li>
+    </ul>
+
+    <h3>4.4 App access</h3>
+    <table>
+      <tr><th>상태</th><th>처리</th></tr>
+      <tr><td><span class="tag done">일반 심사 준비 완료</span></td><td>Play Console의 <code>App access</code>에 인증 완료 리뷰어 계정과 접근절차를 입력합니다. 계정은 만료되지 않고, 위치와 관계없이 재사용 가능하며, 모든 주요 기능에 접근할 수 있어야 합니다.</td></tr>
+    </table>
+
+    <h3>4.5 Data safety·개인정보·계정삭제 확인</h3>
+    <table>
+      <tr><th>항목</th><th>추가 확인내용</th></tr>
+      <tr><td>Data safety</td><td>지갑주소, 거래정보, 기기·보안정보 및 옥텟/SDK의 수집·공유 여부가 실제와 일치하는지 확인</td></tr>
+      <tr><td>개인정보처리방침</td><td>Play Store에서 로그인 없이 접근 가능한 공개 URL 유지</td></tr>
+      <tr><td>앱 내 삭제</td><td>서비스 계정 및 서버 키 조각 처리, 법정 보존정보, 온체인 기록의 불변성 안내</td></tr>
+      <tr><td>웹 삭제 페이지</td><td>앱을 재설치하지 않고도 삭제를 요청할 수 있는 공개 웹 경로 유지</td></tr>
+    </table>
+
+    <h3>4.6 블록체인 기반 콘텐츠 정책</h3>
+    <p><span class="tag excluded">현재 미적용</span> 단순 지갑 기능만 제공하고 NFT·토큰을 판매하거나 활동보상으로 지급하지 않는다면 별도 대응하지 않습니다. 향후 토큰 판매·NFT 거래·토큰 리워드가 추가되면 Financial features declaration 및 Blockchain-based content 정책을 다시 검토합니다.</p>
+  </section>
+
+  <section>
+    <h2>5. 실제 준비물 및 담당</h2>
+    <table>
+      <tr><th>스토어</th><th>준비물</th><th>상태</th><th>담당</th><th>완료 기준</th></tr>
+      <tr><td>Apple</td><td>Organization 계정 확인</td><td><span class="tag done">완료</span></td><td>계정 관리자</td><td>Organization 및 법인 판매자명 확인</td></tr>
+      <tr><td>Apple</td><td>영문 App Review Notes</td><td><span class="tag required">필수</span></td><td>기획 + 개발·보안 검증</td><td>실제 기능·비수탁 구조·메뉴경로 입력</td></tr>
+      <tr><td>Apple</td><td>Export Compliance 질문</td><td><span class="tag required">필수 확인</span></td><td>개발·보안 + 제출 담당</td><td>콘솔 응답 및 필요 시 추가문서 판단</td></tr>
+      <tr><td>Google</td><td>Financial features declaration</td><td><span class="tag required">필수</span></td><td>기획 + 제출 담당</td><td>Cryptocurrency wallet 선택 후 저장</td></tr>
+      <tr><td>공통</td><td>개인정보 신고 정합성</td><td><span class="tag required">기존 자료 점검</span></td><td>기획·개인정보·개발</td><td>정책·콘솔·실제 SDK 처리내용 일치</td></tr>
+      <tr><td>공통</td><td>계정삭제 정책·기능 정합성</td><td><span class="tag required">기존 기능 점검</span></td><td>기획·개발·법무</td><td>MPC 키 조각·보존정보·온체인 기록 안내 반영</td></tr>
+      <tr><td>공통</td><td>리뷰어 계정</td><td><span class="tag done">준비 완료</span></td><td>개발·운영</td><td>추가 인증 없이 전체 기능 접근</td></tr>
+      <tr><td>공통</td><td>비수탁 구조 설명</td><td><span class="tag conditional">질의 시</span></td><td>기획 초안 + 개발·보안·옥텟 확인</td><td>Apple·Google이 추가 설명을 요청할 때 제출</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>6. 최초 심사에서 준비하지 않는 자료</h2>
+    <table>
+      <tr><th>항목</th><th>판정</th><th>이유</th></tr>
+      <tr><td>VASP 비대상 법률의견서</td><td><span class="tag excluded">제외</span></td><td>Apple·Google 공식 최초 제출문서가 아님</td></tr>
+      <tr><td>FIU 법령해석·비조치의견서</td><td><span class="tag excluded">제외</span></td><td>국내 규제 불확실성에 대한 별도 절차</td></tr>
+      <tr><td>옥텟 영문 기술확인서</td><td><span class="tag conditional">질의 시</span></td><td>스토어가 비수탁 기술증빙을 요청한 경우에만 검토</td></tr>
+      <tr><td>MPC 구조도</td><td><span class="tag conditional">질의 시</span></td><td>최초 제출 필수자료가 아님</td></tr>
+      <tr><td>법인등기부등본·공증번역</td><td><span class="tag excluded">제외</span></td><td>조직 개발자 계정 검증이 완료됨</td></tr>
+      <tr><td>금융 라이선스</td><td><span class="tag excluded">제외</span></td><td>현재는 거래소·수탁·매매중개 기능이 없음</td></tr>
+      <tr><td>기능 시연영상</td><td><span class="tag excluded">제외</span></td><td>전체 기능에 접근 가능한 리뷰어 계정을 제공함</td></tr>
+      <tr><td>메인넷 테스트 자금</td><td><span class="tag excluded">제외</span></td><td>공식 필수자료가 아니며 필요 시 리뷰어 질의에 대응</td></tr>
+      <tr><td>BIS ERN·CCATS</td><td><span class="tag conditional">콘솔 결과에 따라</span></td><td>Apple 암호화 질문 결과 추가문서가 요구되는 경우에만 진행</td></tr>
+      <tr><td>전략물자 전문판정</td><td><span class="tag excluded">스토어 범위 제외</span></td><td>스토어 심사가 아닌 별도 수출통제 준법사항</td></tr>
+      <tr><td>Google 정책 사전문의</td><td><span class="tag excluded">제외</span></td><td>사전승인 절차가 아니며 현재 정책문구로 판단 가능</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>7. 제출 순서</h2>
+    <ol class="steps">
+      <li>확정된 앱 기능목록에서 거래소·스왑·리워드 등 추가 금융기능이 없는지 확인합니다.</li>
+      <li>개인정보처리방침, Apple App Privacy, Google Data safety가 월렛 데이터 처리와 일치하는지 점검합니다.</li>
+      <li>앱·웹 계정삭제 경로에 MPC 키 조각 및 온체인 기록 관련 안내가 반영됐는지 확인합니다.</li>
+      <li>Apple App Review Notes의 영문 내용을 개발·보안팀과 검증합니다.</li>
+      <li>Apple 제출 시 Notes, 리뷰어 계정, Export Compliance 질문을 입력합니다.</li>
+      <li>Google Play Console에서 Cryptocurrency wallet을 금융기능으로 선언합니다.</li>
+      <li>Google App access, Data safety, 계정삭제 URL을 최종 확인하고 제출합니다.</li>
+      <li>추가 질의가 있을 때만 비수탁 구조도·옥텟 확인서·법률검토자료를 준비합니다.</li>
+    </ol>
+  </section>
+
+  <section class="source-list">
+    <h2>8. 공식 정책 근거</h2>
+    <h3>Apple</h3>
+    <ul>
+      <li><a href="https://developer.apple.com/app-store/review/guidelines/">App Review Guidelines</a> — 2.1 심사 완전성, 2.3.5 카테고리, 3.1.5 암호화폐</li>
+      <li><a href="https://developer.apple.com/app-store/categories/">App Store Categories and Discoverability</a> — Finance·Lifestyle 정의</li>
+      <li><a href="https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information/">App Review Information</a> — Notes·로그인 정보 입력</li>
+      <li><a href="https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy/">Manage App Privacy</a> — 개인정보처리방침·데이터 신고</li>
+      <li><a href="https://developer.apple.com/support/offering-account-deletion-in-your-app/">Offering account deletion in your app</a></li>
+      <li><a href="https://developer.apple.com/help/app-store-connect/manage-app-information/overview-of-export-compliance/">Overview of export compliance</a></li>
+    </ul>
+    <h3>Google</h3>
+    <ul>
+      <li><a href="https://support.google.com/googleplay/android-developer/answer/13849271?hl=en-GB">Financial features declaration</a></li>
+      <li><a href="https://support.google.com/googleplay/android-developer/answer/16329703?hl=de">Cryptocurrency Exchanges and Software Wallets Policy</a> — 비수탁 월렛 적용 제외 명시</li>
+      <li><a href="https://support.google.com/googleplay/android-developer/answer/9859673?hl=en">Choose a category and tags</a></li>
+      <li><a href="https://support.google.com/googleplay/android-developer/answer/15748846?hl=en">Sign-in details for review</a></li>
+      <li><a href="https://support.google.com/googleplay/android-developer/answer/10787469?hl=en-GB">Data safety section</a></li>
+      <li><a href="https://support.google.com/googleplay/android-developer/answer/13327111?hl=en">App account deletion requirements</a></li>
+      <li><a href="https://support.google.com/googleplay/android-developer/answer/13607354?hl=en-GB">Blockchain-based content</a></li>
+    </ul>
+    <div class="callout warn"><strong>운영 원칙:</strong> 정책은 스토어 카테고리가 아니라 실제 앱 기능을 기준으로 판단합니다. 기능이 추가·변경되면 카테고리, 심사노트, 금융기능 선언, 개인정보 신고를 함께 갱신합니다.</div>
+  </section>
+</main>
+</body>
+</html>
