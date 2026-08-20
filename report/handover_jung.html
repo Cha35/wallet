@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>월렛앱 후속 개발 과제 인수인계서 v1.0</title>
+<style>
+  :root{
+    --ink:#1a1d23; --sub:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --card:#ffffff; --now:#d6402c; --later:#2563c9;
+    --now-bg:#fdecea; --later-bg:#e9f0fd;
+    --done:#1f8a4c; --warn:#b5761a; --need:#8a5cd6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,sans-serif;
+    font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:32px 24px 80px;}
+
+  /* Header */
+  header.doc{
+    background:linear-gradient(135deg,#1a1d23 0%,#2b3140 100%);
+    color:#fff; border-radius:16px; padding:28px 30px; margin-bottom:26px;
+  }
+  header.doc h1{margin:0 0 6px; font-size:24px; letter-spacing:-0.5px;}
+  header.doc .tag{
+    display:inline-block; font-size:12px; font-weight:700; color:#a8b3c7;
+    background:rgba(255,255,255,.08); padding:3px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 28px; margin-top:14px;
+    font-size:13px; color:#c7cfdd;
+  }
+  .meta b{color:#fff; font-weight:600;}
+
+  h2.sec{
+    font-size:16px; margin:34px 0 12px; padding-left:11px;
+    border-left:4px solid var(--ink); letter-spacing:-0.3px;
+  }
+  .lead{color:var(--sub); font-size:13.5px; margin:-4px 0 16px;}
+
+  /* Summary table */
+  table.sum{
+    width:100%; border-collapse:collapse; background:var(--card);
+    border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(20,30,50,.06);
+    font-size:13.5px;
+  }
+  table.sum th, table.sum td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.sum th{background:#eef2f8; font-size:12px; color:var(--sub); font-weight:700; white-space:nowrap;}
+  table.sum td:first-child{font-weight:700; white-space:nowrap;}
+  table.sum tr:last-child td{border-bottom:none;}
+  table.sum td.c{text-align:center; white-space:nowrap;}
+
+  /* Priority pill */
+  .pill{display:inline-block; font-size:11.5px; font-weight:700; padding:2px 9px; border-radius:20px; white-space:nowrap;}
+  .pill.now{color:var(--now); background:var(--now-bg);}
+  .pill.later{color:var(--later); background:var(--later-bg);}
+
+  /* Status chip */
+  .st{font-size:11.5px; font-weight:600; white-space:nowrap;}
+  .st.b{color:var(--warn);}   /* 진행/일부 */
+  .st.n{color:var(--need);}   /* 미착수/미선정 */
+  .st.g{color:var(--done);}   /* 확정 */
+
+  /* Detail cards */
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 22px; margin-bottom:16px; box-shadow:0 1px 2px rgba(20,30,50,.04);
+  }
+  .card.now{border-left:5px solid var(--now);}
+  .card.later{border-left:5px solid var(--later);}
+  .card .head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;}
+  .card .num{
+    font-size:13px; font-weight:800; color:#fff; background:var(--ink);
+    width:26px; height:26px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;
+  }
+  .card h3{margin:0; font-size:17px; letter-spacing:-0.3px;}
+
+  .rows{display:grid; grid-template-columns:110px 1fr; gap:0;}
+  .rows dt{
+    font-size:12px; font-weight:700; color:var(--sub); padding:8px 0;
+    border-top:1px solid var(--line);
+  }
+  .rows dd{margin:0; padding:8px 0; border-top:1px solid var(--line); font-size:14px;}
+  .rows dd ul{margin:0; padding-left:18px;}
+  .rows dd li{margin:2px 0;}
+  .rows dt:first-of-type, .rows dt:first-of-type + dd{border-top:none;}
+
+  .risk{
+    margin-top:12px; background:#fff8ec; border:1px solid #f0e2c4; border-radius:8px;
+    padding:9px 12px; font-size:13px; color:#7a5a12;
+  }
+  .risk b{color:#8a5a00;}
+
+  /* Checklist */
+  table.chk{width:100%; border-collapse:collapse; background:var(--card); border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(20,30,50,.06); font-size:13.5px;}
+  table.chk th, table.chk td{padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top;}
+  table.chk th{background:#eef2f8; font-size:12px; color:var(--sub); font-weight:700;}
+  table.chk tr:last-child td{border-bottom:none;}
+  table.chk td:first-child{font-weight:700; white-space:nowrap;}
+
+  .note{font-size:12.5px; color:var(--sub); margin-top:8px;}
+  .legend{display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--sub); margin:10px 0 0;}
+  .legend span b{color:var(--ink);}
+
+  footer{margin-top:40px; padding-top:16px; border-top:1px solid var(--line); font-size:12px; color:var(--sub);}
+
+  @media print{
+    body{background:#fff; font-size:12px;}
+    .card, table.sum, table.chk{box-shadow:none;}
+    header.doc{background:#1a1d23 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .pill,.card.now,.card.later,table.sum th,table.chk th{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .card{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="doc">
+    <span class="tag">인수인계 문서</span>
+    <h1>월렛앱 후속 개발 과제 인수인계서</h1>
+    <div style="font-size:13.5px; color:#c7cfdd;">9월 출시 이후 이어질 9개 개발·연동 과제의 우선순위, 작업 내용, 담당, 진행 상태</div>
+    <div class="meta">
+      <span><b>작성자</b> · 차상호 (헥토이노베이션 월렛사업실)</span>
+      <span><b>인수 대상</b> · 팀장 + 업무 인계 실무자 2인</span>
+      <span><b>작성일</b> · 2026-08-20</span>
+      <span><b>버전</b> · v1.0</span>
+    </div>
+  </header>
+
+  <!-- ============ 요약 ============ -->
+  <h2 class="sec">한눈에 보기 (팀장용 요약)</h2>
+  <p class="lead">총 9개 과제 — <b style="color:var(--now)">당장 필요 5개</b>(오픈 전 완료 목표) · <b style="color:var(--later)">오픈 이후 4개</b>. 진행 상태는 작성 시점 기준이며, 📌 표시는 인계 실무자가 착수 전 확정·갱신할 항목입니다.</p>
+
+  <table class="sum">
+    <thead>
+      <tr>
+        <th style="width:34px;">#</th>
+        <th>과제</th>
+        <th style="width:96px;">우선순위</th>
+        <th style="width:150px;">담당 부서·업체</th>
+        <th style="width:180px;">현재 진행 상태</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="c">1</td><td>헥토 코인 정책</td>
+        <td class="c"><span class="pill now">당장</span></td>
+        <td>기획 · 파이낸셜</td>
+        <td><span class="st b">방향 확정 · 파이낸셜 협의 전</span></td>
+      </tr>
+      <tr>
+        <td class="c">3</td><td>네트워크 광고 연동</td>
+        <td class="c"><span class="pill now">당장</span></td>
+        <td>기획 · 개발 · 애드팝콘</td>
+        <td><span class="st b">업체(애드팝콘) 확정 · 연동 미착수</span></td>
+      </tr>
+      <tr>
+        <td class="c">4</td><td>MMP 비용·연동</td>
+        <td class="c"><span class="pill now">당장</span></td>
+        <td>기획 · 개발 · 미정</td>
+        <td><span class="st n">업체 미선정 · 비용 시뮬 필요</span></td>
+      </tr>
+      <tr>
+        <td class="c">5</td><td>CRM 툴 비용·연동</td>
+        <td class="c"><span class="pill now">당장</span></td>
+        <td>기획 · 개발 · 미정</td>
+        <td><span class="st n">업체 미선정 · 비용 시뮬 필요</span></td>
+      </tr>
+      <tr>
+        <td class="c">6</td><td>어드민 (스마트컨트랙트 방)</td>
+        <td class="c"><span class="pill now">당장</span></td>
+        <td>기획 · 개발</td>
+        <td><span class="st n">기능 기획 필요 · 미착수</span></td>
+      </tr>
+      <tr>
+        <td class="c">2</td><td>오퍼월 연동</td>
+        <td class="c"><span class="pill later">오픈 이후</span></td>
+        <td>기획 · 개발 · 애드팝콘</td>
+        <td><span class="st n">미착수 (API 연동)</span></td>
+      </tr>
+      <tr>
+        <td class="c">7</td><td>기프티콘 연동</td>
+        <td class="c"><span class="pill later">오픈 이후</span></td>
+        <td>기획 · 미정</td>
+        <td><span class="st n">업체 미선정</span></td>
+      </tr>
+      <tr>
+        <td class="c">8</td><td>게임 유형 추가</td>
+        <td class="c"><span class="pill later">오픈 이후</span></td>
+        <td>기획 · 개발</td>
+        <td><span class="st n">미니게임 기획·개발 미착수</span></td>
+      </tr>
+      <tr>
+        <td class="c">9</td><td>퀴즈 유형 추가</td>
+        <td class="c"><span class="pill later">오픈 이후</span></td>
+        <td>기획 · 개발 · 사업(브랜드)</td>
+        <td><span class="st n">구조 기획 필요 · 미착수</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="legend">
+    <span><b>상태 범례</b></span>
+    <span><b style="color:var(--done)">■</b> 확정</span>
+    <span><b style="color:var(--warn)">■</b> 일부 진행</span>
+    <span><b style="color:var(--need)">■</b> 미착수·미선정</span>
+    <span>📌 인계자 확정 필요</span>
+  </div>
+
+  <!-- ============ A. 당장 ============ -->
+  <h2 class="sec">A. 당장 필요 — 오픈 전 완료 목표</h2>
+
+  <!-- 1 -->
+  <div class="card now">
+    <div class="head"><span class="num">1</span><h3>헥토 코인 정책</h3><span class="pill now">당장</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd>
+        <ul>
+          <li>초기에는 <b>포인트</b>로 운영한다.</li>
+          <li>파이낸셜팀과 협의를 거친다.</li>
+          <li>실제 코인 발행 시점에 <b>포인트 → 코인 교환</b> 기능을 제공한다.</li>
+        </ul>
+      </dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획(차상호) · 파이낸셜(코인 발행 협의)</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>정책 방향(포인트 선운영 → 교환)은 확정. 파이낸셜 협의 및 발행 일정 미확정.</dd>
+    </dl>
+    <div class="risk"><b>핵심 포인트</b> — 오픈 시점에는 포인트 운영만 필수. 교환 기능은 코인 발행 확정 후 개발. 포인트↔코인 교환비율·정책은 📌 파이낸셜 협의 결과 확정.</div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card now">
+    <div class="head"><span class="num">3</span><h3>네트워크 광고 연동</h3><span class="pill now">당장</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd>
+        <ul>
+          <li><b>게임형</b>에 사용할 네트워크 광고를 연동한다.</li>
+          <li>광고 네트워크는 <b>애드팝콘</b>을 사용한다.</li>
+        </ul>
+      </dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획 · 개발 · 애드팝콘(광고 네트워크)</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>사용 업체(애드팝콘) 확정. SDK/연동 작업 미착수.</dd>
+    </dl>
+    <div class="risk"><b>참고</b> — 2번 오퍼월과 동일하게 애드팝콘 사용 → 연동 작업·계약 창구를 묶어 진행하면 효율적.</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card now">
+    <div class="head"><span class="num">4</span><h3>MMP 비용 및 연동</h3><span class="pill now">당장</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd>
+        <ul>
+          <li>MMP(모바일 성과 측정) <b>업체 선정</b></li>
+          <li><b>비용 시뮬레이션</b></li>
+          <li><b>연동 작업</b></li>
+        </ul>
+      </dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획 · 개발 · 📌 업체 미정 (예: AppsFlyer/Adjust 등 후보 검토)</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>업체 미선정. 비용 시뮬레이션 및 연동 모두 미착수.</dd>
+    </dl>
+    <div class="risk"><b>핵심 포인트</b> — 오픈 시 유입 성과 측정이 필요하므로 오픈 전 연동 완료가 목표. 예상 MAU/이벤트 볼륨 기준 📌 비용 시뮬레이션 선행.</div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card now">
+    <div class="head"><span class="num">5</span><h3>CRM 툴 비용 및 연동</h3><span class="pill now">당장</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd>
+        <ul>
+          <li>CRM 툴 <b>업체 선정</b></li>
+          <li><b>비용 시뮬레이션</b></li>
+          <li><b>연동 작업</b></li>
+        </ul>
+      </dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획 · 개발 · 📌 업체 미정 (예: Braze/CleverTap 등 후보 검토)</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>업체 미선정. 비용 시뮬레이션 및 연동 모두 미착수.</dd>
+    </dl>
+    <div class="risk"><b>핵심 포인트</b> — 푸시·인앱 메시지 등 온보딩/리텐션 캠페인 기반. MMP(4번)와 데이터 연계 고려해 함께 검토.</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card now">
+    <div class="head"><span class="num">6</span><h3>어드민 — 스마트컨트랙트 방 관리</h3><span class="pill now">당장</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd>
+        <ul>
+          <li>어드민에서 <b>스마트컨트랙트 방 생성</b> 기능</li>
+          <li>생성된 방에 <b>상금을 강제로 넣어주는(주입) 기능</b></li>
+        </ul>
+      </dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획(차상호) · 개발</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>기능 기획 필요. 화면·권한·처리 흐름 미정의, 개발 미착수.</dd>
+    </dl>
+    <div class="risk"><b>핵심 포인트</b> — 스마트컨트랙트/상금 주입은 온체인 처리·권한 통제가 관건. 📌 상금 재원·주입 권한자·감사 로그 정책 확정 필요.</div>
+  </div>
+
+  <!-- ============ B. 오픈 이후 ============ -->
+  <h2 class="sec">B. 오픈 이후 — 순차 진행</h2>
+
+  <!-- 2 -->
+  <div class="card later">
+    <div class="head"><span class="num">2</span><h3>오퍼월 연동</h3><span class="pill later">오픈 이후</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd>
+        <ul>
+          <li><b>스마트컨트랙트 오퍼월 미션</b>을 위한 연동</li>
+          <li><b>애드팝콘 API 연동 및 개발</b></li>
+        </ul>
+      </dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획 · 개발 · 애드팝콘(오퍼월 API)</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>미착수. API 연동 사양 정의 전.</dd>
+    </dl>
+    <div class="risk"><b>참고</b> — 3번(네트워크 광고)과 같은 애드팝콘 → 계약·연동 창구 공유. 스마트컨트랙트 미션 구조와 6번 어드민 방 생성 기능이 선행 정리되어야 연결됨.</div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card later">
+    <div class="head"><span class="num">7</span><h3>기프티콘 연동</h3><span class="pill later">오픈 이후</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd><b>업체 선정</b> (리워드 지급 수단으로 기프티콘 제공)</dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획 · 📌 업체 미정</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>업체 미선정. 연동 사양·정산 방식 미정.</dd>
+    </dl>
+    <div class="risk"><b>참고</b> — 리워드 정책(헥토 코인·포인트)과의 관계, 지급 트리거 정의 필요.</div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card later">
+    <div class="head"><span class="num">8</span><h3>게임 유형 추가</h3><span class="pill later">오픈 이후</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd><b>미니게임 기획 및 개발</b> (신규 게임 유형 확대)</dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획 · 개발</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>미착수. 추가할 미니게임 종류·규칙 미정의.</dd>
+    </dl>
+    <div class="risk"><b>참고</b> — 3번 네트워크 광고(게임형) 연동 완료 후 확장하는 것이 자연스러움.</div>
+  </div>
+
+  <!-- 9 -->
+  <div class="card later">
+    <div class="head"><span class="num">9</span><h3>퀴즈 유형 추가</h3><span class="pill later">오픈 이후</span></div>
+    <dl class="rows">
+      <dt>작업 내용</dt>
+      <dd>
+        <ul>
+          <li><b>어필리에이트 형태</b>의 퀴즈 구조</li>
+          <li><b>브랜드가 직접 들어와 예치하고 퀴즈를 내는</b> 구조</li>
+        </ul>
+      </dd>
+      <dt>담당 부서·업체</dt>
+      <dd>기획 · 개발 · 사업(브랜드 유치)</dd>
+      <dt>현재 진행 상태</dt>
+      <dd>구조 기획 필요. 브랜드 예치·정산 모델 미정의, 미착수.</dd>
+    </dl>
+    <div class="risk"><b>참고</b> — 브랜드 예치금 관리·정산은 6번 어드민(상금 주입)·스마트컨트랙트 구조와 연계. 사업팀 브랜드 세일즈 병행 필요.</div>
+  </div>
+
+  <!-- ============ 확인 필요 ============ -->
+  <h2 class="sec">인계자 확정·확인 필요 항목 (📌)</h2>
+  <p class="lead">본문 곳곳의 📌를 한곳에 모았습니다. 착수 전 아래를 확정·갱신하세요.</p>
+  <table class="chk">
+    <thead>
+      <tr><th style="width:60px;">과제</th><th>확인 필요 항목</th><th style="width:150px;">확인 주체</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>포인트↔코인 교환비율·발행 일정·정책</td><td>파이낸셜</td></tr>
+      <tr><td>4</td><td>MMP 업체 후보·선정 기준, 비용 시뮬레이션</td><td>기획 · 개발</td></tr>
+      <tr><td>5</td><td>CRM 업체 후보·선정 기준, 비용 시뮬레이션</td><td>기획 · 개발</td></tr>
+      <tr><td>6</td><td>상금 재원, 주입 권한자, 감사 로그 정책</td><td>기획 · 개발 · 사업</td></tr>
+      <tr><td>7</td><td>기프티콘 업체·정산 방식, 리워드 연계</td><td>기획 · 사업</td></tr>
+      <tr><td>9</td><td>브랜드 예치·정산 모델, 브랜드 유치 방식</td><td>기획 · 사업</td></tr>
+      <tr><td>공통</td><td>각 과제의 실제 진행 상태 최신화(본 문서는 작성 시점 기준)</td><td>인계 실무자</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    월렛앱_인수인계_후속개발과제_v1.0_20260820 · 작성자 차상호 · 헥토이노베이션 월렛사업실<br>
+    본 문서의 진행 상태·담당은 작성 시점 기준입니다. 업체명 예시는 검토용 후보이며 선정 결과가 아닙니다.
+  </footer>
+
+</div>
+</body>
+</html>
