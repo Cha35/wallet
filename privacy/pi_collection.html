@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>헥토월렛 · 동의서·시점·목업 (전체 11코드)</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1a1d21; --sub:#5b6572; --line:#e4e8ec;
+    --accent:#2f6bff; --accent-weak:#eaf0ff; --sep:#eef1f4; --th:#eef2f7;
+    --req:#3651c9; --reqbg:#eef2ff; --opt:#6b7482; --optbg:#eef1f5;
+    --warn:#b45a12; --warnbg:#fdf0e6; --no:#b91c3c; --ok:#1f7a45;
+    --wf-line:#b8c0cb; --wf-ink:#3a424e; --wf-faint:#9aa4b0; --wf-fill:#f3f5f8; --wf-cta:#cfd6df;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    line-height:1.6;font-size:14.5px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:30px 20px 80px}
+  header.doc{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:8px}
+  h1{font-size:22px;margin:0 0 6px;letter-spacing:-.4px}
+  .meta{color:var(--sub);font-size:12.5px}
+  .meta b{color:var(--ink)}
+  .lead{color:var(--sub);font-size:13px;margin:8px 0 0}
+  .grp-t{font-size:13px;font-weight:800;color:var(--sub);letter-spacing:.5px;margin:30px 0 2px;padding-top:8px;border-top:2px solid var(--line)}
+
+  .callout{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;
+    padding:13px 16px;margin:16px 0;font-size:13.5px;background:var(--card)}
+  .callout.warn{border-left-color:var(--warn);background:#fffaf4}
+
+  .tocbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px}
+  .tocbox a{color:var(--accent);text-decoration:none}
+  .tocbox .row{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
+
+  .sec{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:16px 0}
+  .sec.hold{border-style:dashed;background:#fcfcfd}
+  .sec-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:4px}
+  .sec-h .code{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px;font-weight:700;color:#fff;background:var(--ink);border-radius:7px;padding:3px 10px}
+  .sec-h .nm{font-size:16.5px;font-weight:700;letter-spacing:-.2px}
+  .badge{font-size:11px;font-weight:700;border-radius:999px;padding:2px 10px;white-space:nowrap}
+  .b-req{background:var(--reqbg);color:var(--req)}
+  .b-fn{background:#e8f5ee;color:#1f7a45}
+  .b-opt{background:var(--optbg);color:var(--opt)}
+  .b-hold{background:var(--warnbg);color:var(--warn)}
+
+  .blk{margin:16px 0 0}
+  .blk-t{font-size:12px;font-weight:800;color:var(--sub);letter-spacing:.3px;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+  .blk-t .n{width:19px;height:19px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-weight:800}
+  .blk-t .sm{font-weight:600;text-transform:none;color:var(--wf-faint);font-size:11.5px}
+
+  table{border-collapse:collapse;width:100%;font-size:12.8px}
+  .dtbl th{background:var(--th);text-align:left;padding:8px 11px;font-weight:700;font-size:11.5px;color:#3a4552;white-space:nowrap;vertical-align:top;width:108px;border:1px solid var(--line)}
+  .dtbl td{padding:8px 11px;border:1px solid var(--line);vertical-align:top}
+  .subtbl{margin-top:0}
+  .subtbl th{background:#f7f9fb;font-size:11px;padding:6px 9px;border:1px solid var(--sep);text-align:left;color:#54606e;vertical-align:top}
+  .subtbl td{font-size:11.6px;padding:6px 9px;border:1px solid var(--sep);vertical-align:top}
+  .need{color:var(--warn);font-weight:700}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px}
+
+  .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0;font-size:12.3px}
+  .flow .step{background:var(--wf-fill);border:1px solid var(--line);border-radius:8px;padding:5px 10px}
+  .flow .step.hl{background:var(--accent-weak);border-color:#bcd0ff;font-weight:700}
+  .flow .arw{color:var(--wf-faint);font-weight:700}
+  .branch{font-size:12.3px;margin:4px 0}
+  .branch.warn{color:var(--warn)}
+  .branch b{color:var(--ink)}
+
+  .mkrow{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;margin-top:6px}
+  .phone{width:236px;flex:0 0 auto;border:2px solid var(--wf-ink);border-radius:22px;padding:7px;background:#fff}
+  .phone.sm{width:210px}
+  .scrn{border:1px solid var(--wf-line);border-radius:13px;overflow:hidden;display:flex;flex-direction:column;min-height:420px;background:#fff}
+  .wf-st{display:flex;justify-content:space-between;font-size:9px;color:var(--wf-faint);padding:6px 12px}
+  .wf-tb{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px dashed var(--wf-line);font-size:12px;font-weight:700;color:var(--wf-ink)}
+  .wf-tb .bk{color:var(--wf-faint)}
+  .wf-dim{justify-content:center;border-bottom:none;color:var(--wf-faint);font-size:10px}
+  .wf-body{flex:1;padding:11px;display:flex;flex-direction:column;gap:8px}
+  .wf-h{font-size:12.5px;font-weight:800;color:var(--wf-ink);line-height:1.45}
+  .wf-sub{font-size:10.5px;color:var(--wf-faint);line-height:1.5}
+  .wf-all{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--wf-line);border-radius:9px;font-size:11.5px;font-weight:700;color:var(--wf-ink)}
+  .wf-all .box{width:15px;height:15px;border:1.5px solid var(--wf-line);border-radius:4px}
+  .wf-item{display:flex;align-items:flex-start;gap:8px;padding:6px 2px;font-size:11px;color:var(--wf-ink)}
+  .wf-item .cb{width:15px;height:15px;border:1.5px solid var(--wf-line);border-radius:4px;flex:0 0 auto;margin-top:1px}
+  .wf-item .lb{flex:1}
+  .wf-item .tag{font-size:9px;font-weight:700;padding:0 5px;border-radius:4px;margin-right:3px}
+  .wf-item .tag.r{background:var(--reqbg);color:var(--req)}
+  .wf-item .tag.o{background:var(--optbg);color:var(--opt)}
+  .wf-item .arw{color:var(--wf-faint);font-size:12px;flex:0 0 auto}
+  .wf-ver{display:block;font-size:8.5px;color:var(--wf-faint);font-family:'IBM Plex Mono',monospace;margin-top:1px}
+  .wf-sep{border-top:1px dashed var(--wf-line);margin:2px 0}
+  .wf-grp{font-size:9px;font-weight:800;color:var(--wf-faint);padding-left:2px}
+  .wf-spacer{flex:1;min-height:14px}
+  .wf-hatch{flex:1;background:repeating-linear-gradient(45deg,#f3f5f8,#f3f5f8 6px,#eef1f4 6px,#eef1f4 12px);min-height:60px}
+  .wf-sheet{border:1px solid var(--wf-line);border-top:2px solid var(--wf-ink);border-radius:16px 16px 0 0;padding:12px 12px;display:flex;flex-direction:column;gap:8px;background:#fff}
+  .wf-grip{width:34px;height:4px;background:var(--wf-line);border-radius:2px;align-self:center}
+  .wf-cta{background:var(--wf-fill);border:1.5px solid var(--wf-cta);border-radius:10px;text-align:center;padding:10px;font-size:12px;font-weight:800;color:var(--wf-ink)}
+  .wf-cta.ghost{background:#fff;border-style:dashed;color:var(--wf-faint);font-weight:600;padding:8px}
+  .wf-note{flex:1 1 240px;min-width:220px;font-size:12.3px}
+  .wf-note ul{margin:4px 0 0;padding-left:18px}
+  .wf-note li{margin:4px 0}
+  .cn{display:inline-flex;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9.5px;align-items:center;justify-content:center;font-weight:800;margin-right:3px}
+  .cap{font-size:10.5px;color:var(--wf-faint);text-align:center;margin-top:5px}
+
+  .sumtbl th{background:var(--th);text-align:left;padding:8px 10px;font-size:11.5px;color:#3a4552;border:1px solid var(--line);white-space:nowrap}
+  .sumtbl td{padding:7px 10px;border:1px solid var(--line);font-size:12px;vertical-align:top}
+  /* master table */
+  .mwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+  .mtbl{border-collapse:collapse;width:100%;font-size:12.3px;min-width:820px}
+  .mtbl thead th{background:var(--th);text-align:left;padding:9px 11px;font-weight:700;font-size:11.5px;color:#3a4552;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0}
+  .mtbl td{padding:9px 11px;border-top:1px solid var(--sep);vertical-align:top}
+  .mtbl tr.clk{cursor:pointer}
+  .mtbl tr.clk:hover{background:#f4f8ff}
+  .mtbl .gr td{background:#f3f5f8;font-weight:700;font-size:11.5px;color:var(--ink);padding:6px 11px}
+  a.jump{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11.5px;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap}
+  a.jump:hover{text-decoration:underline}
+  a.jump .dn{color:var(--wf-faint);font-family:inherit}
+  .mtag{font-size:10px;font-weight:700;border-radius:5px;padding:1px 6px;white-space:nowrap}
+  .mtag.r{background:var(--reqbg);color:var(--req)}
+  .mtag.o{background:var(--optbg);color:var(--opt)}
+  .mtag.h{background:var(--warnbg);color:var(--warn)}
+  .backtop{position:fixed;right:20px;bottom:22px;background:var(--ink);color:#fff;border-radius:999px;padding:9px 15px;font-size:12px;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(0,0,0,.18);z-index:50}
+  .backtop:hover{background:#000}
+  .toplink{font-size:11px;color:var(--wf-faint);text-decoration:none;margin-left:auto;white-space:nowrap}
+  .toplink:hover{color:var(--accent)}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--sub);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>헥토월렛 · 항목별 동의서 · 동의 시점 · 화면 목업 <span style="font-size:14px;color:var(--sub)">(전체 11코드)</span></h1>
+  <div class="meta">버전 <b>v1.0</b> · 작성 <b>2026-08-27</b> · 작성 <b>차상호</b> · 단위 <b>동의 코드</b> · 목업 <b>와이어프레임</b> · 목적 <b>내부 유효성 확인 · 보안/법무 협업</b></div>
+</header>
+<p class="lead">
+  동의 코드마다 <b>① 동의서(구분·필수/선택·수집 항목·수집 목적·보유기간)</b> · <b>② 동의 받는 시점</b> · <b>③ 노출 화면 목업</b>을 한 세트로 정리.
+  동의서 = 정책 <span class="mono">v0.2 §2</span> / 시점 = <span class="mono">§3</span> / 목업 = 온보딩 <span class="mono">v1.8</span>·정책 <span class="mono">§4</span>.
+</p>
+
+<div class="callout warn">
+  <b>⚠️ 전제 · 미해결 4건</b> — ① 스마트 금고 9월 화면 부재(<span class="mono">P_VAULT</span> 보류) · ② 리워드 본인확인 최초 시점(정책=리워드형 vs 실제=웰컴코인) · ③ 마케팅 활용 동의(<span class="mono">M_MARKETING_USE</span>) 수집 지점 · ④ 보유기간 일부 미확정. 해당 칸은 <span class="need">확인 필요</span>로 표기.
+</div>
+
+<div id="top"></div>
+<h2 style="font-size:17px;margin:26px 0 4px;letter-spacing:-.3px">■ 전체 개인정보 수집 항목 총괄표</h2>
+<p class="lead" style="margin-bottom:8px">동의 코드별 <b>구분 · 필수/선택 · 수집 항목 · 수집 목적 · 보유기간</b>을 한 표로. <b>행을 클릭하면</b> 해당 상세(동의서·시점·목업)로 이동합니다.</p>
+<div class="mwrap">
+<table class="mtbl">
+  <thead><tr>
+    <th style="width:170px">동의 코드 / 기능</th><th>구분</th><th>필수·선택</th><th>수집 항목 (요약)</th><th>수집 목적 (요약)</th><th style="width:150px">보유기간</th>
+  </tr></thead>
+  <tbody>
+    <tr class="gr"><td colspan="6">A · 앱 이용 필수</td></tr>
+    <tr class="clk" onclick="location.hash='#c1'"><td><a class="jump" href="#c1">P_CORE_SIGNUP <span class="dn">↓</span></a><br>회원가입·지갑 이용</td><td>앱 이용 필수</td><td><span class="mtag r">필수</span></td><td>소셜 계정정보·닉네임, 회원/지갑 식별정보, 보안·부정이용 로그, 기기·이용기록, PIN 검증값, 자산·거래내역, 푸시 토큰 (10개 목적그룹)</td><td>회원 식별·지갑 생성/보안, 자산·거래 조회, 보안·부정 방지, 품질 개선, 알림</td><td>회원 탈퇴 시까지<span class="need"> (일부 확인)</span></td></tr>
+    <tr class="gr"><td colspan="6">B · 기능 이용 시 필수</td></tr>
+    <tr class="clk" onclick="location.hash='#c2'"><td><a class="jump" href="#c2">P_ASSET_SEND <span class="dn">↓</span></a><br>자산 보내기</td><td>기능 이용 필수</td><td><span class="mtag r">필수</span></td><td>송·수신 주소, 네트워크, 자산 종류·수량, 수수료, 요청일시, 트랜잭션 해시, 처리상태</td><td>자산 전송 요청·서명·결과 확인</td><td>탈퇴 시까지 (법령 시 해당 기간)</td></tr>
+    <tr class="clk" onclick="location.hash='#c3'"><td><a class="jump" href="#c3">P_ADDRESS_BOOK <span class="dn">↓</span></a><br>자주 쓰는 주소</td><td>기능 이용 필수</td><td><span class="mtag r">필수</span></td><td>주소명, 지갑주소, 네트워크</td><td>자주 쓰는 주소 저장·간편 전송</td><td>주소 삭제 또는 탈퇴 시까지</td></tr>
+    <tr class="clk" onclick="location.hash='#c4'"><td><a class="jump" href="#c4">P_SC_CREATE <span class="dn">↓</span></a><br>챌린지 개설(일반)</td><td>기능 이용 필수</td><td><span class="mtag r">필수</span></td><td>회원번호·닉네임·주소, 챌린지 식별·템플릿·방이름·질문/선택지·조건·리워드/예치정보, 컨트랙트 주소, 해시</td><td>챌린지 생성·운영, 생성자 표시, 리워드 정산</td><td>탈퇴 시까지 (온체인 잔존)</td></tr>
+    <tr class="clk" onclick="location.hash='#c5'"><td><a class="jump" href="#c5">P_SC_JOIN <span class="dn">↓</span></a><br>챌린지 참여(일반)</td><td>기능 이용 필수</td><td><span class="mtag r">필수</span></td><td>회원번호·닉네임·주소, 참여 식별, 답변/게임점수/입력기록, 미션완료, 참여결과, 해시</td><td>참여 처리·식별·부정 방지·산정·내역</td><td>탈퇴 시까지 (온체인)</td></tr>
+    <tr class="clk" onclick="location.hash='#c6'"><td><a class="jump" href="#c6">P_REWARD_IDENTITY <span class="dn">↓</span></a><br>리워드 본인확인</td><td>기능 이용 필수</td><td><span class="mtag r">필수</span></td><td>이름, 휴대전화번호, 생년월일, CI, 인증 일시·완료여부 (PASS)</td><td>본인확인·만14세·중복 리워드 방지</td><td class="need">CI 보유정책 확정 필요</td></tr>
+    <tr class="clk" onclick="location.hash='#c7'"><td><a class="jump" href="#c7">P_REWARD_LEDGER <span class="dn">↓</span></a><br>리워드 지급·사용</td><td>기능 이용 필수</td><td><span class="mtag r">필수</span></td><td>회원번호, 리워드 종류·금액(지급/적립/사용/취소/회수/소멸), 잔액, 사유·경로, 식별값, 상태, 유효기간, 일시</td><td>리워드 산정·지급·사용, 잔액·내역, 부정 방지</td><td>탈퇴 시까지 / 보유정책</td></tr>
+    <tr class="clk" onclick="location.hash='#c9'"><td><a class="jump" href="#c9">P_SUPPORT <span class="dn">↓</span></a><br>고객문의</td><td>기능 이용 필수</td><td><span class="mtag r">필수</span></td><td>회원번호, 이름/닉네임, 이메일, 문의내용, 첨부파일, 일시, 처리상태</td><td>문의 접수·답변·분쟁·상담 관리</td><td class="need">보유정책 확정 필요</td></tr>
+    <tr class="clk" onclick="location.hash='#c8'"><td><a class="jump" href="#c8">P_VAULT <span class="dn">↓</span></a><br>스마트 금고</td><td>기능 이용 필수</td><td><span class="mtag h">보류</span></td><td>(정책 기준) 금고 식별·유형, 네트워크, 자산, 참여자·초대, 조건·처리내역, 서명/승인/청산, 컨트랙트 주소, 해시</td><td>금고 생성/참여·거래·공동 승인·청산</td><td class="need">화면 부재로 보류</td></tr>
+    <tr class="gr"><td colspan="6">C · 선택 (마케팅)</td></tr>
+    <tr class="clk" onclick="location.hash='#c10'"><td><a class="jump" href="#c10">M_MARKETING_USE <span class="dn">↓</span></a><br>마케팅 활용</td><td>선택</td><td><span class="mtag o">선택</span></td><td>회원정보·서비스 이용기록 (보유 정보의 활용)</td><td>이벤트 대상 선정·혜택 분석·개인화</td><td>철회 또는 탈퇴 시까지</td></tr>
+    <tr class="clk" onclick="location.hash='#c11'"><td><a class="jump" href="#c11">M_AD_PUSH <span class="dn">↓</span></a><br>광고성 수신(푸시)</td><td>선택</td><td><span class="mtag o">선택</span></td><td>회원번호, 푸시 토큰, 수신 동의 여부·일시</td><td>이벤트·혜택·신규 서비스(광고성) 발송</td><td>철회 또는 탈퇴 시까지</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:11.5px;color:var(--sub);margin:8px 0 0">※ 회원가입(P_CORE_SIGNUP)의 상세 10개 목적그룹은 아래 1번 상세에서 표로 확인. ◆리워드형 조합은 위 6·7 + 챌린지 코드를 한 화면에서 함께 받는 경우 → <a class="jump" href="#cr" style="font-size:11.5px">조합 화면 ↓</a></p>
+
+<div class="tocbox">
+  <b>동의 코드 11 + 조합</b>
+  <div class="row">
+    <a href="#c1">1 P_CORE_SIGNUP</a><a href="#c2">2 P_ASSET_SEND</a><a href="#c3">3 P_ADDRESS_BOOK</a>
+    <a href="#c4">4 P_SC_CREATE</a><a href="#c5">5 P_SC_JOIN</a><a href="#c6">6 P_REWARD_IDENTITY</a>
+    <a href="#c7">7 P_REWARD_LEDGER</a><a href="#cr">◆ 리워드형 조합</a><a href="#c8">8 P_VAULT</a>
+    <a href="#c9">9 P_SUPPORT</a><a href="#c10">10 M_MARKETING_USE</a><a href="#c11">11 M_AD_PUSH</a>
+    <a href="#sum">▣ 요약표</a>
+  </div>
+</div>
+
+<!-- ===== 그룹 A ===== -->
+<div class="grp-t">A · 앱 이용 필수 (회원가입 단계 일괄)</div>
+
+<!-- 1 P_CORE_SIGNUP -->
+<div class="sec" id="c1">
+  <div class="sec-h"><span class="code">P_CORE_SIGNUP</span><span class="nm">회원가입 및 지갑 서비스 이용</span><span class="badge b-req">앱 이용 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>필수 (앱 이용 자체에 필요) · 회원가입 완료 전 일괄 동의</td></tr>
+      <tr><th>동의 성격</th><td>여러 수집 목적을 하나의 <b>[필수] 개인정보 수집·이용 동의</b> 항목으로 묶어 받음 (AC-02)</td></tr>
+      <tr><th>수집 항목<br>(목적 그룹별)</th><td>
+        <table class="subtbl">
+          <tr><th style="width:128px">목적 그룹</th><th>수집 항목</th><th style="width:140px">보유기간</th></tr>
+          <tr><td>소셜 회원가입</td><td>(택1) 카카오 회원번호 / Google·Apple 계정 식별값, 이름, 이메일</td><td>회원 탈퇴 시까지</td></tr>
+          <tr><td>닉네임</td><td>닉네임(가입 시 자동 생성·수정 가능)</td><td>회원 탈퇴 시까지</td></tr>
+          <tr><td>회원·서비스 운영</td><td>내부 회원번호, 이메일, 닉네임, 소셜 종류, 본인인증 상태, 지갑 고유번호, 공개 지갑주소</td><td>회원 탈퇴 시까지</td></tr>
+          <tr><td>보안·부정이용 방지</td><td>회원번호, 공개 지갑주소, 기기 식별정보, IP, 접속일시, 로그인·인증·PIN 실패기록, 지갑 생성·복구·전송 실패기록, 챌린지 이용기록</td><td class="need">목적별 확인 필요</td></tr>
+          <tr><td>운영·품질 개선</td><td>기기정보(OS·모델·앱버전), 접속기록, 화면조회·클릭·기능이용·오류기록, 자산·챌린지·알림 이용기록</td><td class="need">분석정보 확인 필요</td></tr>
+          <tr><td>지갑 생성·관리</td><td>지갑 고유번호, 네트워크 정보, 공개 지갑주소, 생성일시·상태, 키 UUID, 키 버전</td><td>탈퇴 시까지<span class="need"> (삭제범위 확인)</span></td></tr>
+          <tr><td>지갑 보안·인증</td><td>PIN 검증값, 실패 횟수, 잠금 상태, PIN 변경·재설정 이력, 이메일 인증 결과, 기기 서명권한 상태, 복구 처리상태</td><td>탈퇴 시까지<span class="need"> (보안기록 확인)</span></td></tr>
+          <tr><td>자산 조회·관리</td><td>공개 지갑주소, 네트워크, 보유자산 종류·수량, 평가금액</td><td>탈퇴 시까지<span class="need"> (저장여부 확인)</span></td></tr>
+          <tr><td>거래내역 관리</td><td>송·수신 주소, 네트워크, 자산 종류·수량, 수수료, 거래일시, 트랜잭션 해시, 처리상태</td><td>탈퇴 시까지 (법령 보존 시 해당 기간)</td></tr>
+          <tr><td>서비스 알림</td><td>내부 회원번호, 푸시 토큰, 수신 설정, 알림 유형·제목·내용, 발송·수신·읽음 기록</td><td class="need">보관기간 확인 필요</td></tr>
+        </table>
+      </td></tr>
+      <tr><th>수집 목적</th><td>회원 식별·계정/지갑 연결, 지갑 생성·보안·인증, 자산·거래내역 조회, 보안·부정이용 방지, 통계·품질 개선, 서비스 알림 제공</td></tr>
+      <tr><th>함께 받는 약관</th><td>[필수] 서비스 이용약관 · [필수] 월렛 이용약관 · [필수] 만 14세 이상 (개인정보 처리방침은 <b>열람 링크</b>, 동의 항목 아님)</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">AC-01 소셜 로그인</span><span class="arw">→</span><span class="step hl">AC-02 약관 동의 / 카카오 동의창</span><span class="arw">→</span><span class="step">[동의하고 계속하기]</span><span class="arw">→</span><span class="step">동의 기록 저장</span><span class="arw">→</span><span class="step">AC-03 비밀번호·지갑 생성</span></div>
+    <div class="branch">· <b>이미 가입:</b> 자동 로그인 → 홈 &nbsp;·&nbsp; <b>약관만 동의 후 이탈:</b> 재진입 시 AC-03부터 &nbsp;·&nbsp; <b>약관 개정:</b> 재노출 안 함(고지+거부 미표시로 갈음)</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— AC-02 약관 동의 (구글·애플)</span></div>
+    <div class="mkrow">
+      <div><div class="phone"><div class="scrn">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb"><span class="bk">‹</span><span>약관 동의</span></div>
+        <div class="wf-body">
+          <div class="wf-all"><span class="box"></span>약관 전체 동의</div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag r">필수</span>서비스 이용약관<span class="wf-ver">v1.0 · 2026.09.01 시행</span></span><span class="arw">›</span></div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag r">필수</span>월렛 이용약관<span class="wf-ver">v1.0 · 2026.09.01 시행</span></span><span class="arw">›</span></div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag r">필수</span>개인정보 수집·이용 동의<span class="wf-ver">v1.0 · 2026.09.01 시행</span></span><span class="arw">›</span></div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag r">필수</span>만 14세 이상입니다</span></div>
+          <div class="wf-spacer"></div>
+          <div class="wf-cta">동의하고 계속하기</div>
+        </div>
+      </div></div><div class="cap">초기 전체 해제</div></div>
+      <div class="wf-note"><ul>
+        <li><span class="cn">1</span><b>전체 동의</b> = 필수 동의 (선택 항목 없음)</li>
+        <li><span class="cn">2</span>각 항목 <b>버전·시행일</b> 표기, 탭 시 전문으로</li>
+        <li><span class="cn">3</span><b>개인정보 수집·이용 동의</b>가 <span class="mono">P_CORE_SIGNUP</span> — 10개 목적그룹 포괄</li>
+        <li><span class="cn">4</span>필수 전부 체크 시 CTA 활성 = 동의 성립·계정 생성</li>
+        <li><span class="need">확인</span> 초기 체크 상태·연령 확인 방식 [법무]</li>
+      </ul>
+      <p style="font-size:11.3px;color:var(--sub);margin-top:8px">※ 카카오는 <b>동의창(외부)</b>에 우리 약관 3종+연령 등록. 마케팅 없음(AC-07 별도).</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 그룹 B ===== -->
+<div class="grp-t">B · 기능 이용 시 필수 (해당 기능 최초 1회)</div>
+
+<!-- 2 P_ASSET_SEND -->
+<div class="sec" id="c2">
+  <div class="sec-h"><span class="code">P_ASSET_SEND</span><span class="nm">자산 보내기</span><span class="badge b-fn">기능 이용 시 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · <b>자산 보내기 이용 시 필수</b></td></tr>
+      <tr><th>수집 항목</th><td>송·수신 지갑주소, 네트워크 정보, 자산 종류, 전송 수량, 예상·실제 수수료, 전송 요청일시, 트랜잭션 해시, 거래 처리상태·실패정보</td></tr>
+      <tr><th>수집 목적</th><td>디지털 자산 전송 요청, 서명·전송 처리, 전송 결과 확인</td></tr>
+      <tr><th>보유기간</th><td>회원 탈퇴 시까지 (관계 법령상 보존 필요 시 해당 기간)</td></tr>
+      <tr><th>거부 시</th><td>자산 보내기 기능만 제한</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">홈 HM-01 / 코인상세 WL-02</span><span class="arw">→</span><span class="step">[보내기]</span><span class="arw">→</span><span class="step hl">단일 동의 바텀시트</span><span class="arw">→</span><span class="step">[동의하고 보내기]</span><span class="arw">→</span><span class="step">WL-04 주소·수량 입력</span></div>
+    <div class="branch">· <b>이미 동의:</b> 바로 WL-04 &nbsp;·&nbsp; <b>버전 변경:</b> 변경분만 재동의 &nbsp;·&nbsp; <b>닫기:</b> 실행 없이 이전 화면</div>
+    <div class="branch" style="color:var(--sub)">※ 출금 PIN(WL-04b)은 개인정보 동의 아닌 <b>거래 실행 확인</b> — 동의 시점은 입력 전</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 단일 동의 바텀시트</span></div>
+    <div class="mkrow">
+      <div><div class="phone"><div class="scrn">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb wf-dim">▓ 홈 · 코인 상세 (딤) ▓</div>
+        <div class="wf-hatch"></div>
+        <div class="wf-sheet">
+          <div class="wf-grip"></div>
+          <div class="wf-h">자산 보내기를 위해<br>개인정보 수집·이용에 동의해 주세요</div>
+          <div class="wf-sub">전송 주소·수량·수수료·트랜잭션 정보를 처리합니다. 동의하지 않으면 보내기를 이용할 수 없어요.</div>
+          <div class="wf-sep"></div>
+          <div class="wf-item"><span class="lb"><span class="tag r">필수</span>자산 보내기 개인정보 수집·이용</span><span class="arw">전문보기 ›</span></div>
+          <div class="wf-cta">동의하고 보내기</div>
+          <div class="wf-cta ghost">다음에</div>
+        </div>
+      </div></div><div class="cap">단일 항목(체크박스 생략형)</div></div>
+      <div class="wf-note"><ul>
+        <li><span class="cn">1</span><b>제목</b> — 어떤 기능을 위한 동의인지</li>
+        <li><span class="cn">2</span><b>설명</b> — 처리 이유 + 거부 시 제한</li>
+        <li><span class="cn">3</span><b>전문보기</b> — 항목 우측, 복귀 시 상태 유지</li>
+        <li><span class="cn">4</span><b>[동의하고 보내기]</b>로 동의+실행 명시 ("확인/보내기" 단독 금지)</li>
+        <li><span class="need">확인</span> 진입 버튼 문구·바텀시트 위치(보내기.pdf 2차)</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3 P_ADDRESS_BOOK -->
+<div class="sec" id="c3">
+  <div class="sec-h"><span class="code">P_ADDRESS_BOOK</span><span class="nm">자주 쓰는 주소 관리</span><span class="badge b-fn">기능 이용 시 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · <b>주소 저장 이용 시 필수</b></td></tr>
+      <tr><th>수집 항목</th><td>주소명, 지갑주소, 네트워크 정보</td></tr>
+      <tr><th>수집 목적</th><td>자주 쓰는 지갑주소 저장 및 간편 전송</td></tr>
+      <tr><th>보유기간</th><td>이용자가 해당 주소를 삭제하거나 회원 탈퇴 시까지</td></tr>
+      <tr><th>거부 시</th><td>자주 쓰는 주소 저장 기능만 제한 (최근 보낸 주소는 별도 동의 아님 — 자산 보내기·거래내역에 포함)</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">MY-09 주소록 / 보내기 흐름</span><span class="arw">→</span><span class="step">[주소 추가] <span class="need">문구확인</span></span><span class="arw">→</span><span class="step hl">단일 동의 바텀시트</span><span class="arw">→</span><span class="step">[동의하고 저장하기]</span><span class="arw">→</span><span class="step">주소 저장 완료</span></div>
+    <div class="branch">· <b>이미 동의:</b> 바로 저장 폼 &nbsp;·&nbsp; <b>버전 변경:</b> 변경분만 재동의 &nbsp;·&nbsp; <b>닫기:</b> 저장 없이 이전 화면</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 단일 동의 바텀시트 (P_ASSET_SEND형 재사용)</span></div>
+    <div class="mkrow">
+      <div><div class="phone sm"><div class="scrn" style="min-height:380px">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb wf-dim">▓ 주소록 MY-09 (딤) ▓</div>
+        <div class="wf-hatch"></div>
+        <div class="wf-sheet">
+          <div class="wf-grip"></div>
+          <div class="wf-h">자주 쓰는 주소 저장을 위해<br>동의가 필요해요</div>
+          <div class="wf-sub">주소명·지갑주소·네트워크를 저장합니다.</div>
+          <div class="wf-sep"></div>
+          <div class="wf-item"><span class="lb"><span class="tag r">필수</span>자주 쓰는 주소 수집·이용</span><span class="arw">전문보기 ›</span></div>
+          <div class="wf-cta">동의하고 저장하기</div>
+          <div class="wf-cta ghost">다음에</div>
+        </div>
+      </div></div><div class="cap">CS-BS-1 공통 컴포넌트</div></div>
+      <div class="wf-note"><ul>
+        <li>구성은 자산 보내기와 동일(<span class="mono">CS-BS-1</span>), 제목·항목·CTA 문구만 교체</li>
+        <li><b>[동의하고 저장하기]</b> — 동의+저장 명시</li>
+        <li><span class="need">확인</span> 실제 진입 버튼명([주소 추가]/[저장]) — 자주쓰는주소.pdf 2차</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4 P_SC_CREATE -->
+<div class="sec" id="c4">
+  <div class="sec-h"><span class="code">P_SC_CREATE</span><span class="nm">스마트 챌린지 개설 (일반)</span><span class="badge b-fn">기능 이용 시 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · <b>챌린지 개설 이용 시 필수</b></td></tr>
+      <tr><th>수집 항목</th><td>내부 회원번호, 닉네임, 공개 지갑주소, 챌린지·방 식별값, 템플릿 유형, 방 이름, 질문·선택지, 참여조건·진행기간, 리워드·예치 자산정보, 생성일시, 컨트랙트 주소, 트랜잭션 해시</td></tr>
+      <tr><th>수집 목적</th><td>템플릿 이용 챌린지 생성·공개·운영, 생성자 식별·표시, 참여조건 설정, 리워드 예치·정산</td></tr>
+      <tr><th>보유기간</th><td>탈퇴 시까지<span class="need"> (세부 항목별 서버 저장기간 확인)</span> · 온체인 정보는 잔존</td></tr>
+      <tr><th>거부 시</th><td>챌린지 개설 제한</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">EX-01 탐색 홈</span><span class="arw">→</span><span class="step">[챌린지 개설] <span class="need">문구확인</span></span><span class="arw">→</span><span class="step hl">단일 동의 바텀시트</span><span class="arw">→</span><span class="step">[동의하고 개설 시작]</span><span class="arw">→</span><span class="step">EX-04 템플릿·조건 입력</span></div>
+    <div class="branch warn">⚠ 9월 화면에 "일반 vs 리워드형" 개설 구분 미명시 — 리워드형이면 <a href="#cr">조합 화면</a> 적용</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 단일 동의 바텀시트 (CS-BS-1)</span></div>
+    <div class="mkrow">
+      <div><div class="phone sm"><div class="scrn" style="min-height:380px">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb wf-dim">▓ 탐색 홈 EX-01 (딤) ▓</div>
+        <div class="wf-hatch"></div>
+        <div class="wf-sheet">
+          <div class="wf-grip"></div>
+          <div class="wf-h">챌린지 개설을 위해<br>동의가 필요해요</div>
+          <div class="wf-sub">생성자 정보·챌린지 구성·예치 자산 정보를 처리합니다.</div>
+          <div class="wf-sep"></div>
+          <div class="wf-item"><span class="lb"><span class="tag r">필수</span>챌린지 개설 수집·이용</span><span class="arw">전문보기 ›</span></div>
+          <div class="wf-cta">동의하고 개설 시작</div>
+          <div class="wf-cta ghost">다음에</div>
+        </div>
+      </div></div><div class="cap">일반 챌린지 · 마케팅 제외</div></div>
+      <div class="wf-note"><ul>
+        <li>일반 챌린지는 리워드 항목 없음 → 단일 동의</li>
+        <li>리워드형이면 본인확인+원장+선택마케팅이 붙는 <a href="#cr">확장 바텀시트</a></li>
+        <li><span class="need">확인</span> EX-04에 일반/리워드형 분기 존재 여부 [기획]</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 5 P_SC_JOIN -->
+<div class="sec" id="c5">
+  <div class="sec-h"><span class="code">P_SC_JOIN</span><span class="nm">스마트 챌린지 참여 (일반)</span><span class="badge b-fn">기능 이용 시 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · <b>챌린지 참여 이용 시 필수</b></td></tr>
+      <tr><th>수집 항목</th><td>내부 회원번호, 닉네임, 공개 지갑주소, 참여 챌린지·방 식별값, 답변·선택결과·게임점수·입력기록, 광고시청·상품방문·미션완료 여부, 참여일시·횟수, 참여결과, (리워드형) 리워드 지급·청구 내역, 트랜잭션 해시</td></tr>
+      <tr><th>수집 목적</th><td>챌린지 참여 처리, 참여자 식별·표시, 참여조건·결과 확인, 부정 참여 방지, (리워드형) 당첨·리워드 산정, 참여내역 제공</td></tr>
+      <tr><th>보유기간</th><td>탈퇴 시까지<span class="need"> (세부 항목별 확인)</span> · 온체인 정보는 잔존</td></tr>
+      <tr><th>거부 시</th><td>챌린지 참여 제한</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">EX-01 탐색 홈</span><span class="arw">→</span><span class="step">[참여하기] (원탭)</span><span class="arw">→</span><span class="step hl">단일 동의 바텀시트</span><span class="arw">→</span><span class="step">[동의하고 참여하기]</span><span class="arw">→</span><span class="step">참여·결과</span></div>
+    <div class="branch">· <b>이미 동의:</b> 원탭 참여 &nbsp;·&nbsp; EX-02 "확인 3+1" 시트에 동의 통합 여지 (검토)</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 단일 동의 바텀시트 (CS-BS-1)</span></div>
+    <div class="mkrow">
+      <div><div class="phone sm"><div class="scrn" style="min-height:380px">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb wf-dim">▓ 탐색 홈 / EX-02 참여시트 (딤) ▓</div>
+        <div class="wf-hatch"></div>
+        <div class="wf-sheet">
+          <div class="wf-grip"></div>
+          <div class="wf-h">챌린지 참여를 위해<br>동의가 필요해요</div>
+          <div class="wf-sub">참여자 정보·참여 입력·결과를 처리합니다.</div>
+          <div class="wf-sep"></div>
+          <div class="wf-item"><span class="lb"><span class="tag r">필수</span>챌린지 참여 수집·이용</span><span class="arw">전문보기 ›</span></div>
+          <div class="wf-cta">동의하고 참여하기</div>
+          <div class="wf-cta ghost">다음에</div>
+        </div>
+      </div></div><div class="cap">EX-02 통합 검토 대상</div></div>
+      <div class="wf-note"><ul>
+        <li>일반 참여는 본인확인 불필요 → 단일 동의</li>
+        <li>리워드형 참여는 <a href="#cr">확장 바텀시트</a> 적용</li>
+        <li><span class="need">확인</span> EX-02 원탭 참여와 동의 순서(실행 전 동의 보장) [기획·디자인]</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6 P_REWARD_IDENTITY -->
+<div class="sec" id="c6">
+  <div class="sec-h"><span class="code">P_REWARD_IDENTITY</span><span class="nm">리워드 서비스 본인확인</span><span class="badge b-fn">기능 이용 시 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · <b>리워드 이용 시 필수</b></td></tr>
+      <tr><th>수집 항목</th><td>이름, 휴대전화번호, 생년월일, CI, 본인인증 일시·완료 여부 <span class="mono">(PASS)</span></td></tr>
+      <tr><th>수집 목적</th><td>리워드 이용자 본인확인, 만 14세 이상 여부 확인, 동일 CI 계정의 중복 리워드 적립·사용 방지</td></tr>
+      <tr><th>보유기간</th><td class="need">CI 보유정책 확정 필요 (1CI=1계정 어뷰징 방지 목적)</td></tr>
+      <tr><th>거부 시</th><td>리워드형 챌린지·리워드 적립·사용 제한 (기본 지갑 기능은 이용 가능)</td></tr>
+      <tr><th>비고</th><td>PASS 성별 전달 시 이용 목적 없으면 수집 제외 방향 <span class="need">개발 확인</span> · DI는 미수집(결정로그)</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">AC-04 본인인증 / AC-06 재유도 / 홈</span><span class="arw">→</span><span class="step">[본인인증하기]</span><span class="arw">→</span><span class="step hl">PASS 표준 화면(외부)</span><span class="arw">→</span><span class="step">성공</span><span class="arw">→</span><span class="step">AC-05 웰컴코인</span></div>
+    <div class="branch warn">⚠ 실제 최초 지점 = <b>웰컴코인(AC-04)</b>. 정책 문서(리워드형 시)와 시점 불일치 → 정합 필요</div>
+    <div class="branch">· <b>미인증(S3):</b> 하루 1회 재유도(강제 아님), [다음에 하기] 허용 &nbsp;·&nbsp; <b>이미 인증(S4):</b> 재유도 없음·리워드형서 skip</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— AC-04 본인인증 (전체 페이지)</span></div>
+    <div class="mkrow">
+      <div><div class="phone sm"><div class="scrn" style="min-height:400px">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb"><span class="bk">‹</span><span>본인인증</span></div>
+        <div class="wf-body">
+          <div style="text-align:center;padding:16px 4px 4px">
+            <div style="width:52px;height:52px;border:1.5px dashed var(--wf-line);border-radius:14px;display:inline-flex;align-items:center;justify-content:center;color:var(--wf-faint);font-size:11px;font-weight:700">PASS</div>
+            <div class="wf-h" style="margin-top:10px">본인인증하고<br>웰컴 코인 받기</div>
+            <div class="wf-sub" style="margin-top:4px">인증하면 1,000 HC를 드려요<br>이름·휴대전화·생년월일·CI를 확인합니다</div>
+          </div>
+          <div class="wf-sep"></div>
+          <div class="wf-item"><span class="lb"><span class="tag r">필수</span>리워드 본인확인 수집·이용</span><span class="arw">전문보기 ›</span></div>
+          <div class="wf-spacer"></div>
+          <div class="wf-cta">본인인증하기</div>
+          <div class="wf-cta ghost">다음에 하기</div>
+        </div>
+      </div></div><div class="cap">AC-04 · 외부 PASS 연계</div></div>
+      <div class="wf-note"><ul>
+        <li><span class="cn">1</span>웰컴코인 유인과 결합된 본인확인 안내</li>
+        <li><span class="cn">2</span>수집 항목(CI 등) 전문보기 제공</li>
+        <li><span class="cn">3</span>[본인인증하기] → PASS 외부 → 성공 시 AC-05</li>
+        <li><span class="cn">4</span>[다음에 하기] = 강제 아님, 그날 재노출 안 함</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 7 P_REWARD_LEDGER -->
+<div class="sec" id="c7">
+  <div class="sec-h"><span class="code">P_REWARD_LEDGER</span><span class="nm">리워드 지급·사용 관리</span><span class="badge b-fn">기능 이용 시 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · <b>리워드 이용 시 필수</b></td></tr>
+      <tr><th>수집 항목</th><td>내부 회원번호, 리워드 종류, 지급·적립·사용·취소·회수·소멸 금액, 리워드 잔액, 발생 사유·경로, 관련 챌린지·이벤트 식별값, 처리상태, 유효기간, 처리일시</td></tr>
+      <tr><th>수집 목적</th><td>리워드 산정·지급·적립·사용·취소·회수·소멸 처리, 잔액·이용내역 제공, 중복·부정 이용 방지, 고객문의·분쟁 처리</td></tr>
+      <tr><th>보유기간</th><td>회원 탈퇴 시까지 또는 <span class="need">리워드 기록 보유정책에 따른 기간(확정 필요)</span></td></tr>
+      <tr><th>거부 시</th><td>리워드 적립·지급·사용 및 잔액·이력 관리 제한</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">리워드형 챌린지 최초</span><span class="arw">→</span><span class="step hl">본인확인과 함께 수집 (확장 바텀시트)</span><span class="arw">→</span><span class="step">이후 지급·사용은 skip</span></div>
+    <div class="branch">· 단독 수집 지점 없음 — 항상 <span class="mono">P_REWARD_IDENTITY</span>와 <b>동시 수집</b> (조합 화면 참조)</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 아래 ◆ 리워드형 조합 화면에 포함</span></div>
+    <div class="callout" style="margin:6px 0"><a href="#cr"><b>◆ 리워드형 조합 화면</b></a>의 확장 바텀시트에 "리워드 지급·사용 관리" 필수 항목으로 함께 노출됩니다.</div>
+  </div>
+</div>
+
+<!-- ◆ 리워드형 조합 -->
+<div class="sec" id="cr">
+  <div class="sec-h"><span class="code">P_SC_JOIN/CREATE + P_REWARD_IDENTITY + P_REWARD_LEDGER</span><span class="nm">◆ 리워드형 챌린지 (조합)</span><span class="badge b-fn">필수 3</span><span class="badge b-opt">+ 선택 마케팅 2</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서 (복수 항목)</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>필수 3 (챌린지 참여/개설 + 리워드 본인확인 + 리워드 지급·사용) + 선택 2 (마케팅 활용·광고성 수신)</td></tr>
+      <tr><th>필수 항목</th><td><span class="mono">P_SC_JOIN</span> 또는 <span class="mono">P_SC_CREATE</span> · <span class="mono">P_REWARD_IDENTITY</span> · <span class="mono">P_REWARD_LEDGER</span> — 각 수집 항목은 개별 코드 동의서 참조</td></tr>
+      <tr><th>선택 항목</th><td><span class="mono">M_MARKETING_USE</span> · <span class="mono">M_AD_PUSH</span> (거부해도 리워드 기능 정상 이용)</td></tr>
+      <tr><th>수집 목적</th><td>챌린지 처리·리워드 산정·본인확인·지급/사용 관리 / (선택) 마케팅 활용·광고 발송</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">EX-01</span><span class="arw">→</span><span class="step">[참여하기]/[개설] (리워드형)</span><span class="arw">→</span><span class="step hl">확장 동의 바텀시트 (미동의 항목만)</span><span class="arw">→</span><span class="step">PASS 인증(미인증 시)</span><span class="arw">→</span><span class="step">참여/생성정보 입력</span></div>
+    <div class="branch">· <b>이미 인증(웰컴코인):</b> 본인확인 빠지고 화면 짧아짐 &nbsp;·&nbsp; <b>선택 닫기:</b> 필수만으로 진행 &nbsp;·&nbsp; <b>필수 닫기:</b> 중단</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 확장 동의 바텀시트 (필수3+선택2)</span></div>
+    <div class="mkrow">
+      <div><div class="phone"><div class="scrn">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb wf-dim">▓ 탐색 홈 (딤) ▓</div>
+        <div class="wf-sheet" style="margin-top:auto">
+          <div class="wf-grip"></div>
+          <div class="wf-h" style="font-size:12px">리워드 챌린지 참여를 위해 동의가 필요해요</div>
+          <div class="wf-all"><span class="box"></span>전체 동의 (선택 포함)</div>
+          <div class="wf-grp">필수</div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag r">필수</span>챌린지 참여 수집·이용</span><span class="arw">›</span></div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag r">필수</span>리워드 본인확인</span><span class="arw">›</span></div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag r">필수</span>리워드 지급·사용 관리</span><span class="arw">›</span></div>
+          <div class="wf-sep"></div>
+          <div class="wf-grp">선택</div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag o">선택</span>개인정보 마케팅 활용</span><span class="arw">›</span></div>
+          <div class="wf-item"><span class="cb"></span><span class="lb"><span class="tag o">선택</span>광고성 정보 수신(앱 푸시)</span><span class="arw">›</span></div>
+          <div class="wf-cta">동의하고 본인인증</div>
+          <div class="wf-cta ghost">다음에</div>
+        </div>
+      </div></div><div class="cap">필수 3 + 선택 2</div></div>
+      <div class="wf-note"><ul>
+        <li><span class="cn">1</span><b>전체 동의</b> "선택 포함" 명시, 개별 재해제 가능</li>
+        <li><span class="cn">2</span>필수/선택 그룹 구분, 각 항목 전문보기</li>
+        <li><span class="cn">3</span><b>필수 3개만</b> 체크해도 CTA 활성</li>
+        <li><span class="cn">4</span>[동의하고 본인인증] → PASS → 참여정보</li>
+        <li><span class="need">확인</span> 리워드형/일반 화면 분기 · <span class="mono">M_MARKETING_USE</span> 노출 확정</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 8 P_VAULT -->
+<div class="sec hold" id="c8">
+  <div class="sec-h"><span class="code">P_VAULT</span><span class="nm">스마트 금고 이용</span><span class="badge b-hold">보류 · 화면 부재</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서 <span class="sm">(정책 정의 기준, 화면 확정 전)</span></div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · 스마트 금고 이용 시 필수</td></tr>
+      <tr><th>수집 항목</th><td>내부 회원번호, 닉네임, 공개 지갑주소, 금고 식별값·이름·유형, 네트워크 정보, 자산 종류·수량, 참여자·초대 정보, 입금·출금·교환 조건·처리내역, 서명·승인·거절·청산 내역, 컨트랙트 주소, 트랜잭션 해시, 금고 처리상태</td></tr>
+      <tr><th>수집 목적</th><td>금고 생성·참여·자산 예치·거래, 참여자 식별·표시, 거래조건 확인, 공동 승인·거절·청산 처리, 거래상태·결과 제공</td></tr>
+      <tr><th>보유기간</th><td>탈퇴 시까지<span class="need"> (세부 확인)</span> · 온체인 잔존</td></tr>
+    </table>
+  </div>
+  <div class="callout warn" style="margin-top:14px">
+    <b>❌ 목업 보류</b> — 9월 피그마 42화면에 스마트 금고 화면이 없어 노출 위치·시점·목업을 확정할 수 없습니다.
+    <b>9월 출시 범위에 금고 포함 여부</b>부터 확정 필요 [기획]. 미포함 시 동의 코드·문구를 이번 범위에서 제외.
+  </div>
+</div>
+
+<!-- 9 P_SUPPORT -->
+<div class="sec" id="c9">
+  <div class="sec-h"><span class="code">P_SUPPORT</span><span class="nm">고객문의</span><span class="badge b-fn">기능 이용 시 필수</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택(전체 기준) · <b>문의 이용 시 필수</b></td></tr>
+      <tr><th>수집 항목</th><td>내부 회원번호, 이름 또는 닉네임, 이메일, 문의내용, 첨부파일, 문의·답변 일시, 처리상태 <span class="need">(거래번호·해시·기기정보 자동첨부 시 추가)</span></td></tr>
+      <tr><th>수집 목적</th><td>문의 접수·답변, 서비스 장애 확인, 분쟁 처리, 상담내역 관리</td></tr>
+      <tr><th>보유기간</th><td class="need">고객문의 보유정책에 따른 기간 (확정 필요)</td></tr>
+      <tr><th>거부 시</th><td>고객문의 접수 제한</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">MY-01 마이 → MY-07 고객센터</span><span class="arw">→</span><span class="step">[1:1 문의] <span class="need">문구확인</span></span><span class="arw">→</span><span class="step hl">단일 동의 바텀시트</span><span class="arw">→</span><span class="step">[동의하고 문의하기]</span><span class="arw">→</span><span class="step">문의 작성·전송</span></div>
+    <div class="branch warn">⚠ TWS 헬프봇 연동이면 회원·기기·거래정보 자동전달·저장 주체 확인 필요 [개발]</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 단일 동의 바텀시트 (CS-BS-1)</span></div>
+    <div class="mkrow">
+      <div><div class="phone sm"><div class="scrn" style="min-height:380px">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb wf-dim">▓ 고객센터 MY-07 (딤) ▓</div>
+        <div class="wf-hatch"></div>
+        <div class="wf-sheet">
+          <div class="wf-grip"></div>
+          <div class="wf-h">1:1 문의를 위해<br>동의가 필요해요</div>
+          <div class="wf-sub">이메일·문의내용·첨부파일을 처리합니다.</div>
+          <div class="wf-sep"></div>
+          <div class="wf-item"><span class="lb"><span class="tag r">필수</span>고객문의 수집·이용</span><span class="arw">전문보기 ›</span></div>
+          <div class="wf-cta">동의하고 문의하기</div>
+          <div class="wf-cta ghost">다음에</div>
+        </div>
+      </div></div><div class="cap">긴급기능 아님 · 마케팅 제외</div></div>
+      <div class="wf-note"><ul>
+        <li>[동의하고 문의하기]로 동의+전송 명시</li>
+        <li>헬프봇 자동전달 항목이 있으면 전문에 명시</li>
+        <li><span class="need">확인</span> 헬프봇 저장 주체·자동첨부 항목 [개발]</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 그룹 C ===== -->
+<div class="grp-t">C · 선택 (마케팅) — 필수·긴급 기능엔 노출 금지</div>
+
+<!-- 10 M_MARKETING_USE -->
+<div class="sec" id="c10">
+  <div class="sec-h"><span class="code">M_MARKETING_USE</span><span class="nm">개인정보 마케팅 활용 동의</span><span class="badge b-opt">선택</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택</td></tr>
+      <tr><th>수집·이용 항목</th><td>회원정보·서비스 이용기록 (신규 수집이 아니라 <b>보유 정보의 활용</b>)</td></tr>
+      <tr><th>이용 목적</th><td>이벤트 대상 선정, 혜택 분석, 개인화</td></tr>
+      <tr><th>보유기간</th><td>동의 철회 또는 회원 탈퇴 시까지 (동의 이력은 관계 법령상 필요 기간)</td></tr>
+      <tr><th>거부 시</th><td>모든 기능 정상 이용 (제한 없음)</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="branch warn">⚠ 현재 AC-07은 "마케팅 정보 수신 동의" 1종만 → <b>개인정보 마케팅 활용 동의 수집 지점이 없음</b>. AC-07 2종 분리 또는 별도 지점 지정 필요 [법무·기획]</div>
+    <div class="branch">권장 노출 지점: 리워드형 최초, 최초 리워드 지급 완료, 리워드 홈 혜택 안내, 마이 알림·혜택 설정</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— 아래 ◆ AC-07 / 마이 설정 공유</span></div>
+    <div class="callout" style="margin:6px 0">현재 화면엔 활용 동의 항목이 없음. 아래 <b>AC-07 목업</b>에 "개인정보 마케팅 활용" 항목을 추가하는 안(권장) 또는 마이 동의관리(MY-08)에 배치.</div>
+  </div>
+</div>
+
+<!-- 11 M_AD_PUSH -->
+<div class="sec" id="c11">
+  <div class="sec-h"><span class="code">M_AD_PUSH</span><span class="nm">광고성 정보 수신 동의 (앱 푸시)</span><span class="badge b-opt">선택</span></div>
+  <div class="blk"><div class="blk-t"><span class="n">1</span>동의서</div>
+    <table class="dtbl">
+      <tr><th>구분</th><td>선택</td></tr>
+      <tr><th>수집 항목</th><td>내부 회원번호, 푸시 토큰, 마케팅 수신 동의 여부, 동의·철회 일시</td></tr>
+      <tr><th>수집 목적</th><td>이벤트·혜택·신규 서비스 정보(광고성) 발송</td></tr>
+      <tr><th>보유기간</th><td>동의 철회 또는 회원 탈퇴 시까지 (동의 이력은 관계 법령상 필요 기간)</td></tr>
+      <tr><th>거부 시</th><td>광고성 정보 수신만 제한, 서비스 알림은 정상</td></tr>
+      <tr><th>발송 조건</th><td>광고성 수신 동의 <b>+</b> 앱 마케팅 설정 ON <b>+</b> OS 푸시 권한 허용 — <b>3개 모두</b> 충족 시</td></tr>
+    </table>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">2</span>동의 받는 시점</div>
+    <div class="flow"><span class="step">가입 후 홈 최초 진입</span><span class="arw">→</span><span class="step hl">AC-07 ① 알림 수신 → OS 권한 → ② 마케팅 수신</span><span class="arw">→</span><span class="step">[동의하고 받기]/[닫기]</span></div>
+    <div class="branch">· 이후 변경: 마이 MY-04 혜택 알림 토글 / MY-08 동의 관리 &nbsp;·&nbsp; <b>철회 즉시</b> 발송 중단</div>
+    <div class="branch" style="color:var(--sub)">※ 광고성 수신 동의와 OS 푸시 권한은 별개 절차. 이메일·SMS는 9월 미포함(추가 시 채널별 동의)</div>
+  </div>
+  <div class="blk"><div class="blk-t"><span class="n">3</span>노출 화면 목업 <span class="sm">— AC-07 알림·마케팅 동의 (홈 진입 팝업, 순차 2개)</span></div>
+    <div class="mkrow">
+      <div><div class="phone sm"><div class="scrn" style="min-height:360px">
+        <div class="wf-st"><span>9:41</span><span>▁▂▃ 🔋</span></div>
+        <div class="wf-tb wf-dim">▓ 홈 HM-01 (딤) ▓</div>
+        <div class="wf-hatch"></div>
+        <div class="wf-sheet">
+          <div class="wf-grip"></div>
+          <div class="wf-grp" style="color:var(--accent)">① 알림 수신 동의 → OS 권한</div>
+          <div class="wf-sub" style="margin-bottom:2px">거래·보안·공지 등 서비스 알림</div>
+          <div class="wf-sep"></div>
+          <div class="wf-grp" style="color:var(--accent)">② 마케팅 정보 수신 동의</div>
+          <div class="wf-h" style="font-size:12px">혜택·이벤트 소식을 받아보세요</div>
+          <div class="wf-item"><span class="lb"><span class="tag o">선택</span>광고성 정보 수신(앱 푸시) <span style="color:var(--wf-faint)">전문 ›</span></span></div>
+          <div class="wf-cta">동의하고 받기</div>
+          <div class="wf-cta ghost">닫기 (미동의)</div>
+        </div>
+      </div></div><div class="cap">AC-07 · 결과 토스트</div></div>
+      <div class="wf-note"><ul>
+        <li><span class="cn">1</span>순서 = ① 알림 수신 → OS 권한 → ② 마케팅 수신</li>
+        <li><span class="cn">2</span>[동의하고 받기]=동의 / [닫기]=미동의, 결과 토스트</li>
+        <li><span class="cn">3</span>OS 권한 있어도 미동의자에겐 미발송(값 2개 별도 관리)</li>
+        <li><span class="need">확인</span> <span class="mono">M_MARKETING_USE</span>(활용) 항목 추가 여부 [법무]</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 요약표 -->
+<div class="grp-t" id="sum">▣ 전체 요약</div>
+<div class="sec">
+  <table class="sumtbl">
+    <thead><tr><th>#</th><th>동의 코드</th><th>구분</th><th>화면 형태</th><th>동의 시점(요약)</th><th>마케팅</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="mono">P_CORE_SIGNUP</td><td>앱 필수</td><td>전체 페이지 AC-02</td><td>회원가입 완료 전</td><td>제외</td></tr>
+      <tr><td>2</td><td class="mono">P_ASSET_SEND</td><td>기능 필수</td><td>단일 바텀시트</td><td>보내기 최초, 입력 전</td><td>제외</td></tr>
+      <tr><td>3</td><td class="mono">P_ADDRESS_BOOK</td><td>기능 필수</td><td>단일 바텀시트</td><td>주소 최초 저장 전</td><td>제외</td></tr>
+      <tr><td>4</td><td class="mono">P_SC_CREATE</td><td>기능 필수</td><td>단일 바텀시트</td><td>챌린지 최초 개설 전</td><td>제외</td></tr>
+      <tr><td>5</td><td class="mono">P_SC_JOIN</td><td>기능 필수</td><td>단일 바텀시트</td><td>챌린지 최초 참여 전</td><td>제외</td></tr>
+      <tr><td>6</td><td class="mono">P_REWARD_IDENTITY</td><td>기능 필수</td><td>전체 페이지 AC-04</td><td class="need">웰컴코인(정책 정합 필요)</td><td>제외</td></tr>
+      <tr><td>7</td><td class="mono">P_REWARD_LEDGER</td><td>기능 필수</td><td>확장 바텀시트(조합)</td><td>리워드형 최초(본인확인과 동시)</td><td>제외</td></tr>
+      <tr><td>◆</td><td class="mono">리워드형 조합</td><td>필수3+선택2</td><td>확장 바텀시트</td><td>리워드형 참여·개설 최초</td><td>포함(선택)</td></tr>
+      <tr><td>8</td><td class="mono">P_VAULT</td><td class="need">보류</td><td class="need">화면 부재</td><td class="need">9월 범위 확정 필요</td><td>제외</td></tr>
+      <tr><td>9</td><td class="mono">P_SUPPORT</td><td>기능 필수</td><td>단일 바텀시트</td><td>문의 최초 전송 전</td><td>제외</td></tr>
+      <tr><td>10</td><td class="mono">M_MARKETING_USE</td><td>선택</td><td class="need">지점 부재(추가 필요)</td><td>리워드형·마이 등</td><td>해당</td></tr>
+      <tr><td>11</td><td class="mono">M_AD_PUSH</td><td>선택</td><td>AC-07 팝업 / MY-04</td><td>홈 최초 진입</td><td>해당</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--sub);margin-top:10px">
+    <b>미해결(별도 결정):</b> ① P_VAULT 9월 범위 · ② 본인확인 최초 시점 정합 · ③ M_MARKETING_USE 수집 지점 · ④ 보유기간 <span class="need">확인 필요</span> 칸 · ⑤ 각 기능 PDF 버튼 문구 2차 열람.
+  </p>
+</div>
+
+<footer>
+  헥토월렛 · 항목별 동의서·시점·목업 (전체 11코드) v1.0 · 2026-08-27 · 작성 차상호 (월렛사업실) ·
+  근거: 개인정보_수집이용_정리 v0.2 §2·§3·§4 · 온보딩 기능정의서 v1.8 (AC-02·04·06·07) · 피그마 42화면 정리 v1.0 · 결정로그
+</footer>
+
+<a href="#top" class="backtop">↑ 총괄표</a>
+
+</div>
+</body>
+</html>
