@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>헥토월렛 · 개인정보 수집·이용 정리 v0.4</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1a1d21; --sub:#5b6572; --line:#e4e8ec;
+    --accent:#2f6bff; --aw:#eaf0ff; --sep:#eef1f4; --th:#eef2f7; --navy:#12203a;
+    --req:#3651c9; --reqbg:#eef2ff; --opt:#8a5a00; --optbg:#fbf1dc;
+    --warn:#b45a12; --warnbg:#fdf0e6; --no:#b91c3c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    line-height:1.6;font-size:14.5px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:30px 20px 90px}
+  header.doc{border-bottom:2px solid var(--navy);padding-bottom:16px;margin-bottom:6px}
+  h1{font-size:23px;margin:0 0 8px;letter-spacing:-.4px}
+  .meta{color:var(--sub);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap}
+  .meta b{color:var(--ink)}
+  .tiles{display:flex;gap:10px;margin:16px 0 4px;flex-wrap:wrap}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1;min-width:120px;text-align:center}
+  .tile .n{font-size:22px;font-weight:800}
+  .tile .l{font-size:11.5px;color:var(--sub);margin-top:2px}
+  .tile.req .n{color:var(--req)} .tile.opt .n{color:var(--opt)}
+
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:18px 0}
+  .toc b{font-size:13px}
+  .toc-list{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px;font-size:13px}
+  .toc-list a{color:var(--accent);text-decoration:none}
+  .toc-list a:hover{text-decoration:underline}
+
+  h2{font-size:18px;margin:36px 0 6px;padding-bottom:8px;border-bottom:1px solid var(--line);letter-spacing:-.3px;scroll-margin-top:16px}
+  h3{font-size:15px;margin:20px 0 6px}
+  .lead{color:var(--sub);font-size:13px;margin:6px 0}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+  .card-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:10px}
+  .card-h .idx{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:7px;padding:2px 9px}
+  .card-h .t{font-size:16px;font-weight:800;letter-spacing:-.2px}
+  .tag{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 10px;white-space:nowrap}
+  .tag.req{background:var(--reqbg);color:var(--req)}
+  .tag.reqf{background:#e8f5ee;color:#1f7a45}
+  .tag.opt{background:var(--optbg);color:var(--opt)}
+
+  table{border-collapse:collapse;width:100%;font-size:12.8px}
+  .dtbl th{background:var(--th);text-align:left;padding:9px 11px;font-weight:700;font-size:11.5px;color:#3a4552;white-space:nowrap;vertical-align:top;border:1px solid var(--line);width:110px}
+  .dtbl td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  ul.crit{margin:10px 0 0;padding-left:18px}
+  ul.crit li{margin:4px 0;font-size:12.8px;color:#3a424e}
+  ul.plain{margin:8px 0;padding-left:18px}
+  ul.plain li{margin:4px 0}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px}
+  .note.ex{border-left-color:var(--no)}
+  .backtop{position:fixed;right:20px;bottom:22px;background:var(--navy);color:#fff;border-radius:999px;padding:9px 15px;font-size:12px;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(0,0,0,.18)}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);color:var(--sub);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+
+<header class="doc">
+  <h1>헥토월렛 · 개인정보 수집 및 이용 동의 정리</h1>
+  <div class="meta"><span>버전 <b>v0.4</b></span><span>작성 기준일 <b>2026-08-31</b></span><span>상태 <b>개인정보 해당 여부·조항 구조 정리 작업본</b></span></div>
+</header>
+
+<div class="tiles">
+  <div class="tile req"><div class="n">3</div><div class="l">회원가입 필수 (2.1~2.3)</div></div>
+  <div class="tile"><div class="n">5</div><div class="l">기능 이용 시 필수 (2.4~2.8)</div></div>
+  <div class="tile opt"><div class="n">2</div><div class="l">선택 (3.1~3.2)</div></div>
+</div>
+
+<div class="toc">
+  <b>목차</b>
+  <div class="toc-list">
+    <a href="#s1">1. 작성 기준</a>
+    <a href="#s2">2. 수집·이용 항목</a>
+    <a href="#s3">3. 선택 동의 항목</a>
+    <a href="#s4">4. 별도 동의 조항 검토</a>
+    <a href="#s5">5. 수집 항목 제외 기준</a>
+    <a href="#s6">6. 확인 필요 사항</a>
+  </div>
+</div>
+
+<!-- 1 -->
+<h2 id="s1">1 · 작성 기준</h2>
+<ul class="plain">
+  <li>헥토가 실제로 수집·저장·이용하는 정보 중, 단독 또는 헥토가 현실적으로 결합할 수 있는 다른 정보와 함께 특정 이용자를 식별할 수 있는 정보만 수집 항목에 포함한다.</li>
+  <li>OS·이용자 기기·외부 사업자 내부에서만 처리되고 헥토가 전달받지 않는 정보는 제외한다.</li>
+  <li>앱 이용 자체에 필수적인 <b>회원가입 및 관리 · 지갑 · 서비스 공통 운영</b>은 회원가입 단계에서 필수 동의받는다.</li>
+  <li>앱 전체 이용에는 필수적이지 않으나 특정 기능 제공에 필요한 정보는 해당 기능을 최초로 이용하기 전에 동의받는다.</li>
+  <li>지갑 생성·보안·자산 조회·수신·전송·예치는 <b>지갑</b> 하나로 통합하고 네트워크별로 동의 항목을 나누지 않는다.</li>
+  <li>스마트컨트랙트 생성과 참여는 <b>스마트컨트랙트 생성·참여</b> 하나로 통합한다.</li>
+  <li><b>본인확인</b>과 <b>리워드 지급·사용 관리</b>는 처리 목적이 다르므로 별도 항목으로 구분한다.</li>
+</ul>
+
+<!-- 2 -->
+<h2 id="s2">2 · 개인정보 수집 및 이용 항목</h2>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.1</span><span class="t">회원가입 및 관리</span><span class="tag req">회원가입 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>구분</th><th>수집 항목</th><th>수집 목적</th><th style="width:130px">보유기간</th></tr>
+    <tr><td>카카오 간편가입</td><td>소셜 계정 식별값, 이메일, 암호화된 고객번호(UID)</td><td>회원 가입의사 확인, 카카오 간편가입·로그인 제공, 회원 식별 및 회원 자격 유지·관리</td><td>회원 탈퇴 시까지</td></tr>
+    <tr><td>구글 간편가입</td><td>소셜 계정 식별값, 이메일, 암호화된 고객번호(UID)</td><td>회원 가입의사 확인, 구글 간편가입·로그인 제공, 회원 식별 및 회원 자격 유지·관리</td><td>회원 탈퇴 시까지</td></tr>
+    <tr><td>애플 간편가입</td><td>소셜 계정 식별값, 이메일, 암호화된 고객번호(UID)</td><td>회원 가입의사 확인, 애플 간편가입·로그인 제공, 회원 식별 및 회원 자격 유지·관리</td><td>회원 탈퇴 시까지</td></tr>
+  </table>
+  <ul class="crit"><li>이용자가 선택한 소셜 가입수단의 정보만 처리한다.</li><li>지원 네트워크의 지갑이 1개 이상 생성된 경우 회원가입을 완료한다.</li></ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.2</span><span class="t">지갑</span><span class="tag req">회원가입 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>암호화된 고객번호(UID), 지갑 식별값, 네트워크 정보, 이용자의 공개 지갑주소, 지갑 생성 상태, PIN 검증값(암호화·해시 처리된 값)</td></tr>
+    <tr><th>수집 목적</th><td>회원 계정과 지갑 연결, 지원 네트워크의 지갑 생성·식별·관리, 지갑 생성 완료 여부 확인 및 회원가입 완료 처리, 지갑 보안·인증, 디지털 자산 현황 조회·수신·전송·예치 및 거래내역 제공</td></tr>
+    <tr><th>보유기간</th><td>회원 탈퇴 시까지. 단, 탈퇴 후 지갑 관련 정보의 처리정책에 따라 별도 보관이 필요한 경우 해당 기간까지</td></tr>
+    <tr><th>동의 시점</th><td>회원가입 시</td></tr>
+  </table>
+  <ul class="crit">
+    <li>네트워크 정보는 네트워크별 지갑주소와 생성 상태를 식별·관리하기 위한 정보로 포함한다.</li>
+    <li>PIN 원문은 저장하지 않고 PIN 검증값만 처리한다.</li>
+    <li>지문·얼굴 등 생체정보는 기기 OS에서 처리하며 헥토가 수집하지 않는다. 생체인증은 별도의 개인정보 선택동의 없이 이용자가 기능 사용 여부를 선택한다.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.3</span><span class="t">서비스 공통 운영</span><span class="tag req">회원가입 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>이메일, 암호화된 고객번호(UID), 닉네임, 디바이스 정보(OS, 기기 모델, 앱 버전), 서비스 이용기록(앱 활동 정보)</td></tr>
+    <tr><th>수집 목적</th><td>서비스 운영 및 이용자 관리, 닉네임 중복 방지, 민원 처리 및 분쟁 해결, 비인가 사용·부정 이용 방지, 법령상 의무 이행, 서비스 이용 통계 분석 및 품질 개선</td></tr>
+    <tr><th>보유기간</th><td>회원 탈퇴 시까지. 단, 관계 법령에 따라 보존할 필요가 있는 경우 해당 기간까지</td></tr>
+    <tr><th>동의 시점</th><td>회원가입 시</td></tr>
+  </table>
+  <ul class="crit">
+    <li>접속일시, 화면 조회·클릭·기능 이용기록 및 오류기록은 실제 저장되는 범위에서 <b>서비스 이용기록(앱 활동 정보)</b>으로 통합한다.</li>
+    <li>광고 목적으로 사용하는 ADID·IDFA는 서비스 공통 운영 항목에 포함하지 않는다.</li>
+    <li>IP주소는 실제 저장 여부와 이용 목적을 확인하기 전까지 수집 항목에서 제외한다.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.4</span><span class="t">본인확인</span><span class="tag reqf">기능 이용 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>이름, 휴대전화번호, 생년월일, CI, 본인확인 일시 및 결과</td></tr>
+    <tr><th>수집 목적</th><td>이용자 본인확인, 만 14세 이상 여부 확인, 동일 이용자의 중복 가입·리워드 이용 방지, 고객문의 및 분쟁 발생 시 이용자 식별</td></tr>
+    <tr><th>보유기간</th><td>회원 탈퇴 시까지. 단, 중복 이용 방지를 위한 CI의 탈퇴 후 보유 여부 및 기간은 확인 필요</td></tr>
+    <tr><th>동의 시점</th><td>리워드형 스마트컨트랙트 생성·참여 또는 리워드 적립·사용을 최초로 시도하기 전</td></tr>
+  </table>
+  <ul class="crit"><li>본인확인을 완료하지 않아도 회원가입과 기본 지갑 기능은 이용할 수 있다.</li><li>성별은 별도 이용 목적이 확정되지 않은 경우 수집·저장하지 않는다.</li></ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.5</span><span class="t">스마트컨트랙트 생성·참여</span><span class="tag reqf">기능 이용 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>암호화된 고객번호(UID), 닉네임, 이용자의 공개 지갑주소, 스마트컨트랙트 생성·참여 이력</td></tr>
+    <tr><th>수집 목적</th><td>스마트컨트랙트 생성·참여 이용자 식별 및 표시, 생성·참여 처리, 참여조건 및 결과 확인, 부정 참여 방지, 이용내역 제공</td></tr>
+    <tr><th>보유기간</th><td>회원 탈퇴 시까지. 단, 공개 블록체인에 기록된 정보는 탈퇴 후에도 삭제되지 않을 수 있음</td></tr>
+    <tr><th>동의 시점</th><td>스마트컨트랙트를 최초로 생성하거나 참여하기 전</td></tr>
+  </table>
+  <ul class="crit">
+    <li>회사가 제공하는 DIY 템플릿을 이용자가 선택·설정하여 스마트컨트랙트를 생성하는 구조를 기준으로 한다.</li>
+    <li>스마트 금고 생성·참여도 개인정보 처리 목적이 동일한 범위에서는 이 항목에 포함한다.</li>
+    <li>방 이름, 질문, 선택지, 템플릿 유형, 거래조건 등 이용자를 식별하지 않는 기능 구성값은 수집 항목에 포함하지 않는다.</li>
+    <li>리워드를 제공하는 스마트컨트랙트는 본인확인을 완료한 이용자만 생성·참여할 수 있다.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.6</span><span class="t">리워드 지급·사용 관리</span><span class="tag reqf">기능 이용 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>암호화된 고객번호(UID), 리워드 적립·지급·사용·취소·회수·소멸 이력, 리워드 잔액</td></tr>
+    <tr><th>수집 목적</th><td>리워드 산정·적립·지급·사용·취소·회수·소멸 처리, 잔액 및 이용내역 제공, 중복·부정 이용 방지, 고객문의 및 분쟁 처리</td></tr>
+    <tr><th>보유기간</th><td>회원 탈퇴 시까지. 단, 관계 법령 또는 리워드 기록 보유정책에 따라 보존할 필요가 있는 경우 해당 기간까지</td></tr>
+    <tr><th>동의 시점</th><td>리워드를 최초로 적립하거나 사용하기 전</td></tr>
+  </table>
+  <ul class="crit">
+    <li>활동 적립, 스마트컨트랙트 보상, 운영자 수기지급, 사용취소, 오지급·부정 이용 회수 및 유효기간 만료에 따른 소멸을 포함한다.</li>
+    <li>향후 기프티콘 등 상품 교환 기능을 도입하여 추가 개인정보를 처리하는 경우 별도 검토한다.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.7</span><span class="t">보상형 광고 참여</span><span class="tag reqf">기능 이용 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>암호화된 고객번호(UID), 광고식별자(ADID, IDFA), 광고 노출·클릭·시청·참여 완료 기록, 리워드 지급 이력</td></tr>
+    <tr><th>수집 목적</th><td>보상형 광고 노출·참여 완료 여부 확인, 리워드 지급, 중복·부정 참여 방지 및 광고 성과 확인</td></tr>
+    <tr><th>보유기간</th><td>회원 탈퇴 또는 동의 철회 시까지. 단, 관계 법령에 따라 보존할 필요가 있는 경우 해당 기간까지</td></tr>
+    <tr><th>동의 시점</th><td>보상형 광고에 최초로 참여하기 전</td></tr>
+  </table>
+  <ul class="crit"><li>기본 지갑 기능은 이 항목에 동의하지 않아도 이용할 수 있다.</li><li>광고식별자 처리는 운영체제의 광고 추적 설정 및 권한 상태를 함께 고려한다.</li></ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">2.8</span><span class="t">고객문의</span><span class="tag reqf">기능 이용 시 필수</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>암호화된 고객번호(UID), 닉네임 또는 이메일, 문의내용, 첨부파일, 문의·답변 일시 및 처리상태</td></tr>
+    <tr><th>수집 목적</th><td>문의 접수·답변, 서비스 장애 확인, 민원·분쟁 처리 및 상담내역 관리</td></tr>
+    <tr><th>보유기간</th><td>고객문의 보유정책에 따른 기간</td></tr>
+    <tr><th>동의 시점</th><td>고객문의를 최초로 등록하기 전</td></tr>
+  </table>
+</div>
+
+<!-- 3 -->
+<h2 id="s3">3 · 선택 동의 항목</h2>
+
+<div class="card">
+  <div class="card-h"><span class="idx">3.1</span><span class="t">맞춤형 혜택 및 마케팅 활용</span><span class="tag opt">선택</span></div>
+  <table class="dtbl">
+    <tr><th>수집 항목</th><td>암호화된 고객번호(UID), 이메일, 서비스 이용기록(앱 활동 정보), 광고식별자(ADID, IDFA), 디바이스 정보</td></tr>
+    <tr><th>수집 목적</th><td>이용자 특성 및 서비스 이용행태 분석, 맞춤형 이벤트·프로모션·혜택 제공, 마케팅 통계 및 광고 성과 분석</td></tr>
+    <tr><th>보유기간</th><td>동의 철회 또는 회원 탈퇴 시까지. 단, 관계 법령에 따라 보존할 필요가 있는 경우 해당 기간까지</td></tr>
+    <tr><th>동의 시점</th><td>회원가입 또는 지정된 마케팅 동의 제안 화면</td></tr>
+  </table>
+  <ul class="crit"><li>휴대전화번호, 성별, 연령대, IP주소 및 쿠키는 실제 마케팅 활용이 확정되기 전까지 포함하지 않는다.</li><li>선택 동의를 거부해도 회원가입 및 기본 기능 이용을 제한하지 않는다.</li></ul>
+</div>
+
+<div class="card">
+  <div class="card-h"><span class="idx">3.2</span><span class="t">광고성 정보 수신</span><span class="tag opt">선택</span></div>
+  <p class="lead"><b>맞춤형 혜택 및 마케팅 활용</b>과 별개의 선택 동의로 구성한다.</p>
+  <table class="dtbl">
+    <tr><th>처리 정보</th><td>암호화된 고객번호(UID), 푸시 토큰, 채널별 수신 동의 여부 및 동의·철회 일시</td></tr>
+    <tr><th>목적</th><td>이벤트·프로모션·혜택 등 광고성 정보 발송 및 수신 동의 관리</td></tr>
+    <tr><th>보유기간</th><td>동의 철회 또는 회원 탈퇴 시까지. 단, 동의 이력은 관계 법령상 필요한 기간까지</td></tr>
+    <tr><th>동의 시점</th><td>회원가입, 최초 리워드 기능 이용 또는 마케팅 설정 변경 시</td></tr>
+  </table>
+  <ul class="crit"><li>이메일·문자메시지를 실제 발송하는 경우 해당 연락처와 채널별 동의 상태를 추가한다.</li><li>운영체제의 푸시 알림 권한은 광고성 정보 수신 동의와 별도로 처리한다.</li></ul>
+</div>
+
+<!-- 4 -->
+<h2 id="s4">4 · 별도 동의 조항 필요 여부 확인</h2>
+<div class="note">
+  <b>4.1 서비스 알림</b><br>
+  다음 정보는 서비스 제공 과정에서 처리될 수 있으나, 별도의 개인정보 수집·이용 동의 조항으로 둘지 <b>서비스 공통 운영</b>에 포함할지는 추가 검토한다.
+  <ul class="plain" style="margin-top:8px">
+    <li>암호화된 고객번호(UID)</li><li>푸시 토큰</li><li>서비스 알림 설정</li><li>알림 발송·수신·읽음 기록</li>
+  </ul>
+  검토 대상은 자산 거래, 지갑 보안, 스마트컨트랙트, 리워드, 약관·공지 및 고객문의 처리 결과 안내다.
+</div>
+
+<!-- 5 -->
+<h2 id="s5">5 · 수집 항목 제외 기준</h2>
+<div class="note ex">
+  다음 정보는 현재 확인된 처리 구조와 개인정보 판단 기준에 따라 수집 항목에서 <b>제외</b>한다.
+  <ul class="plain" style="margin-top:8px">
+    <li>거래별 송·수신 지갑주소, 자산 종류·수량, 평가금액, 전송 수량, 수수료, 거래일시, 트랜잭션 해시 및 거래 처리상태</li>
+    <li>자주 쓰는 주소명·상대 지갑주소 및 최근 보낸 주소</li>
+    <li>방 이름, 질문, 선택지, 템플릿 유형 및 일반 거래조건</li>
+    <li>PIN 원문, 지문·얼굴 등 생체정보 원본</li>
+    <li>개인키, 시드 문구, 이용자 기기의 MPC Share 및 옥텟이 보관하는 MPC Share</li>
+    <li>기기에서만 처리되는 QR 촬영 이미지와 카메라 영상</li>
+  </ul>
+  단, 향후 처리 구조가 변경되어 헥토가 해당 정보를 수집·저장하고 특정 이용자와 연결하여 관리하는 경우 개인정보 해당 여부를 다시 검토한다.
+</div>
+
+<!-- 6 -->
+<h2 id="s6">6 · 확인 필요 사항</h2>
+<div class="note">
+  <ul class="plain" style="margin:0">
+    <li>IP주소를 서버·WAF·보안로그 등에 실제 저장하고 UID와 연결하여 이용하는지</li>
+    <li>디바이스 정보로 저장하는 정확한 값과 별도의 기기 식별값 존재 여부</li>
+    <li>본인확인기관에서 헥토에 전달하는 정확한 항목과 CI 보유기간</li>
+    <li>광고·분석 SDK별 수집 항목, 제공업체, 보유기간 및 국외이전 여부</li>
+    <li>회원 탈퇴 후 헥토와 옥텟이 보관하는 지갑 관련 정보 및 MPC Share 처리정책</li>
+    <li>스마트 금고의 공개정보 범위</li>
+    <li>서비스 알림을 별도 개인정보 수집·이용 동의로 구성할 필요가 있는지</li>
+    <li>광고성 정보 발송 채널이 앱 푸시·이메일·문자메시지 중 어디까지인지</li>
+  </ul>
+</div>
+
+<footer>헥토월렛 · 개인정보 수집 및 이용 동의 정리 v0.4 · 2026-08-31 · 공유용 · 원문(문서 A) 내용 그대로 · 월렛사업실</footer>
+
+</div>
+<a href="#top" class="backtop">↑ 맨 위로</a>
+<script>
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]');if(!a)return;
+    var el=document.getElementById(a.getAttribute('href').slice(1));if(!el)return;
+    e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+</script>
+</body>
+</html>
